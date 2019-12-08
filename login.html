@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>נווט אל התואר</title>
+
+   <!-- Bootstrap core CSS -->
+   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+   <!-- Custom styles for this template -->
+   <link href="css/business-frontpage.css" rel="stylesheet">
+  
+   <link href="css/hebCss.css" rel="stylesheet">
+   <!-- Bootstrap 4 Chosen jQuery Plugin-->
+   <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+   <!-- <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css"> -->
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+ 
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="css/bootstrap-select.css">
+ 
+
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">נווט אל התואר</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="index.html">דף הבית
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">אודות</a>
+          </li>
+          <li class="nav-item">
+            <a hrep="login.html" class="nav-link" href="#">כניסה</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">צור קשר</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="bg-primary py-0 mb-5">
+    <div class="container h-100">
+      <div class="row h-100 align-items-center">
+        <div class="col-lg-12">
+          <h1 class="display-4 text-white mt-5 mb-2">בא נתחיל בהכרות קצרה:)</h1>
+          <p class="lead mb-5 text-white-50">בבקשה סמן את המקצועות שכבר עברת</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <div class="container">
+
+
+  </div>
+  <!-- /.row -->
+  <div class="row">
+      <div class="col-md-2 mb-5">
+
+      </div>
+
+      <div class="col-md-4 mb-5">
+         <p>יש לבחור את את הקורסים שכבר עשיתה</p>
+          <select id="choose-course" class="selectpicker" multiple data-hide-disabled="true" data-live-search="true" data-size="5">
+              <option>מדעי המחשב</option>
+              <option> מתמטיקה דיסקרטית</option>
+              <option>אלגברה לינארית</option>
+              <option>חדווא 1</option>
+              <option>חדווא 2</option>
+              <option>ספרתיות</option>
+              <option>מתם</option>
+              <option>גאווה</option>
+              <option>CPP</option>
+              <option>אלגברה  מודרנית</option>
+              <option>את"ם</option>
+              <option>מבני נתונים</option>
+            </select>
+            <button id="choose-info" class="btn btn-light">choose</button>
+            <button id="choose-reset-btn" class="btn btn-light">reset</button>
+        
+      </div>
+
+      <div class="col-md-4 mb-5">
+          <p>כמה קורסים תרצה בסמסטר</p>
+           <select id="choose-course-number" class="selectpicker"  data-hide-disabled="true" data-live-search="true" data-size="5">
+               <option>1</option>
+               <option>2</option>
+               <option>3</option>
+               <option selected >4</option>
+               <option>5</option>
+               <option>6</option>
+               <option>7</option>
+               <option>8</option>
+              
+             </select>
+             <button id="choose-info-number" class="btn btn-light">choose</button>
+             
+         
+       </div>
+  <!-- /.row -->
+
+  <div class="row">
+
+
+    <div class="col-md-6 mb-4">
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <!-- <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+  
+
+  <script src="js/login.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script> -->
+
+  <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script> -->
+
+  <!--dorpbox-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>
+  <script src="js/bootstrap-select.js"></script>
+  <!-- pdfreader -->
+  <script src="pdfreader/pdf.js"></script>
+  
+</body>
+
+</html>
