@@ -85,6 +85,19 @@
         console.log(passwordUser);
 
     });
+
+
+    ///login with google
+    $("#google-btn").click(function () {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
+    });
+
+
+
+
+
+
     //sign up  bt on main page
     $("#signup").click(function () {
         window.location.href = "signup.html";
