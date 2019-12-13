@@ -58,7 +58,7 @@
         if (user) {
             userNow2 = user
             console.log(user);
-            window.location.href = "gallary.html";
+            // window.location.href = "index.html";
         } else {
 
             console.log("not loging");
@@ -139,7 +139,7 @@
 
     ///sign up
     $("#login2").click(function(){
-        window.location.href = "index.html";
+        window.location.href = "login.html";
     });
     $("#signup2").click(function () {
         $("#login-err").css("display", "none");
@@ -217,6 +217,7 @@
         localStorage.setItem("gender", gender);
         localStorage.setItem("signup","yes");
 
+       
 
         var okToMove = true;
         firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
@@ -234,12 +235,14 @@
 
 
         });
+
         setTimeout(function () {
 
 
             if (okToMove === true) {
+                
 
-                window.location.href = "gallary.html";
+                window.location.href = "index.html";
             }
         }, 3000)
     });
