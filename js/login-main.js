@@ -58,7 +58,7 @@
         if (user) {
             userNow2 = user
             console.log(user);
-            // window.location.href = "index.html";
+            window.location.href = "index.html";
         } else {
 
             console.log("not loging");
