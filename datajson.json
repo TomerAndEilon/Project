@@ -1,0 +1,30 @@
+[{
+    "id": 1,
+    "name": "פייתון",
+    "condition": []
+},
+{
+    "id": 2,
+    "name": "לינארית",
+    "condition": []
+},
+{
+    "id": 3,
+    "name": "ספרתיות",
+    "condition": []
+},
+{
+    "id": 4,
+    "name": "דיסקרטית",
+    "condition": []
+},
+{
+    "id": 5,
+    "name": "מודרנית",
+    "condition": ["3"]
+},
+{
+    "id": 6,
+    "name": "c++",
+    "condition": []
+}]
