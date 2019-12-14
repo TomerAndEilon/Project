@@ -89,6 +89,8 @@
 
     ///login with google
     $("#google-btn").click(function () {
+        console.log("click on google btn")
+  
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithRedirect(provider);
     });
