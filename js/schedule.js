@@ -40,14 +40,21 @@ function make_graph() {
             return list_number
         }
         function slice_by_list_index(list_vertex,number_list) {
+           
             var list_to_return = [];
             for (let index = 0; index < number_list.length; index++) {
                 list_to_return.push(list_vertex[number_list[index]]);
             }
             return list_to_return
         }
-
-        let list_number_unqie = get_list_with_unquie_numer($('#choose-course-number').selectpicker('val'));
+        let list_number_unqie
+        if($('#choose-course-number').selectpicker('val') < list_vertex.length)
+        {
+             list_number_unqie = get_list_with_unquie_numer($('#choose-course-number').selectpicker('val'));
+        }
+        else{
+             list_number_unqie = get_list_with_unquie_numer(list_vertex.length);
+        }
         
         return slice_by_list_index(list_vertex,list_number_unqie)
         
@@ -140,6 +147,7 @@ function make_graph() {
 
 
     });
+
     $("#show-me-all").on("click", function () {
         var g = new Graph();
         requestURL = "https://tomerandeilon.github.io/Project/datajsonvalue.json"
