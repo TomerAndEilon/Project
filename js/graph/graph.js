@@ -3,6 +3,7 @@ class Vertex {
         this.details = details;
         this.name = details.name;
         this.id = details.id;
+        this.value = details.value
         this.condition = details.condition;
         this.AdjInList = [];
         this.AdjOutList = [];
@@ -36,6 +37,9 @@ class Vertex {
     getId() {
         return this.id;
     }
+    getValue() {
+        return this.value;
+    }
 }
 
 /********************************************************************************************************** */
@@ -68,8 +72,6 @@ class Graph {
         }
     }
     connectBetweenCourseslist() {
-       
-
         for (var i = 0; i < this.VertexList.length; i++) {
             if ((Array.isArray(this.VertexList[i].getCond()) && this.VertexList[i].getCond().length)) {
                 for (const [key, condobj] of Object.entries(this.VertexList[i].getCond())) {

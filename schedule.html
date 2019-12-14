@@ -113,18 +113,18 @@
       <div class="col-md-4 mb-5">
          <p>יש לבחור את את הקורסים שכבר עשיתה</p>
           <select id="choose-course" class="selectpicker" multiple data-hide-disabled="true" data-live-search="true" data-size="5">
-              <option>מדעי המחשב</option>
+              <option>ארגון ותכנות המחשב</option>
+              <option>אלגברה מודרנית</option>
+              <option>חדו''א 1</option>
+              <option>חדו''א 2</option>
+              <option>מבוא למדעי המחשב</option>
+              <option>אלגברה ליניארית למדעי המחשב</option>
+              <option>מבוא לתכנות מערכות</option>
               <option> מתמטיקה דיסקרטית</option>
-              <option>אלגברה לינארית</option>
-              <option>חדווא 1</option>
-              <option>חדווא 2</option>
-              <option>ספרתיות</option>
-              <option>מתם</option>
-              <option>גאווה</option>
-              <option>CPP</option>
-              <option>אלגברה  מודרנית</option>
-              <option>את"ם</option>
-              <option>מבני נתונים</option>
+              <option>תכנות מונחה עצמים ג'אווה</option>
+              <option>תכנות בשפת ++C</option>
+              <option>מבוא להסתברות</option>
+              
             </select>
             <button id="choose-info" class="btn btn-light">choose</button>
             <button id="choose-reset-btn" class="btn btn-light">reset</button>
@@ -156,19 +156,22 @@
     <div class="col-md-2 mb-4">
       
     </div>
-    <div class="col-md-6 mb-4">
+    <div class="col-md-2 mb-4">
       <button id="choose-for-me-btn" class="btn btn-light">תציעו לי</button>
     </div>
+    
 
   </div>
   <!-- /.row -->
 
    <div class="row">
-      <div class="col-md-2 mb-4">
-      
+     <div class="col-md-2 mb-4">
+     
       </div>
       <div id="table-row" style="display: none;" class="col-md-8 mb-4">
-      המערכת בחרה לך קורסים:
+        <p>המערכת בחרה לך קורסים: </p>
+        <button id="show-me-more" class="btn btn-light">תראה לי עוד</button>
+        <button id="show-me-all" class="btn btn-light">תראה לי את כול הקורסים</button>
         <table id="table-coures" class="table">
           <thead  class="thead-dark">
             <tr>

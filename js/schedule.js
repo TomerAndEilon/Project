@@ -18,6 +18,40 @@ $(document).ready(function () {
 });
 
 function make_graph() {
+    function filter_by_number_of_course(list_vertex) {
+
+        function get_list_with_unquie_numer(size) {
+            let list_number = [];
+            let not_to_save_flag = true
+            while (list_number.length < size) {
+                not_to_save_flag = true
+                number = Math.floor(Math.random()*list_vertex.length);
+                for (let j = 0; j < list_number.length; j++) {
+                    if (list_number[j]==number) {
+                        list_number.splice(j, 1);
+                        not_to_save_flag = false
+                    }
+                    
+                }
+                if(not_to_save_flag)
+                list_number.push(number);
+                
+            }
+            return list_number
+        }
+        function slice_by_list_index(list_vertex,number_list) {
+            var list_to_return = [];
+            for (let index = 0; index < number_list.length; index++) {
+                list_to_return.push(list_vertex[number_list[index]]);
+            }
+            return list_to_return
+        }
+
+        let list_number_unqie = get_list_with_unquie_numer($('#choose-course-number').selectpicker('val'));
+        
+        return slice_by_list_index(list_vertex,list_number_unqie)
+        
+    }
     function add_to_html_file_data_coures(list_vertex) {
         $("#table-coures").empty();
         $("#table-coures").append(
@@ -36,7 +70,7 @@ function make_graph() {
                 '<tr>'+
                 '<th scope="row">'+(index+1)+'</th>' +
                 '<td>'+list_vertex[index].getName()+'</td>'+
-                '<td>5</td>'+  
+                '<td>'+list_vertex[index].getValue()+'</td>'+  
             ' </tr>'
             ); 
         }
@@ -45,7 +79,7 @@ function make_graph() {
     }
     $("#choose-for-me-btn").on("click", function () {
         var g = new Graph();
-        requestURL = "https://tomerandeilon.github.io/Project/datajson.json"
+        requestURL = "https://tomerandeilon.github.io/Project/datajsonvalue.json"
         let request = new XMLHttpRequest();
         request.open('GET', requestURL);
         request.responseType = 'text'; // now we're getting a string!
@@ -65,15 +99,79 @@ function make_graph() {
             const event = new Date();
             g.connectBetweenCourseslist();
             // g.printGraph();
-            var list_vertex = g.getRelevantCourses()
-            
-            add_to_html_file_data_coures(list_vertex)
+            var list_vertex = g.getRelevantCourses();
+            list_vertex = filter_by_number_of_course(list_vertex);
+            add_to_html_file_data_coures(list_vertex);
             
             
         }
 
 
     });
+
+    $("#show-me-more").on("click", function () {
+        var g = new Graph();
+        requestURL = "https://tomerandeilon.github.io/Project/datajsonvalue.json"
+        let request = new XMLHttpRequest();
+        request.open('GET', requestURL);
+        request.responseType = 'text'; // now we're getting a string!
+        request.send();
+
+        request.onload = function () {
+            const arrText = request.response; // get the string from the response
+            const arr = JSON.parse(arrText); // convert it to an object
+            runG(arr);
+        };
+
+       
+        function runG(arr) {
+            for (i in arr) {
+                g.addVertex(new Vertex(arr[i]));
+            }
+            const event = new Date();
+            g.connectBetweenCourseslist();
+            // g.printGraph();
+            var list_vertex = g.getRelevantCourses();
+            list_vertex = filter_by_number_of_course(list_vertex);
+            add_to_html_file_data_coures(list_vertex);
+            
+            
+        }
+
+
+    });
+    $("#show-me-all").on("click", function () {
+        var g = new Graph();
+        requestURL = "https://tomerandeilon.github.io/Project/datajsonvalue.json"
+        let request = new XMLHttpRequest();
+        request.open('GET', requestURL);
+        request.responseType = 'text'; // now we're getting a string!
+        request.send();
+
+        request.onload = function () {
+            const arrText = request.response; // get the string from the response
+            const arr = JSON.parse(arrText); // convert it to an object
+            runG(arr);
+        };
+
+       
+        function runG(arr) {
+            for (i in arr) {
+                g.addVertex(new Vertex(arr[i]));
+            }
+            const event = new Date();
+            g.connectBetweenCourseslist();
+            // g.printGraph();
+            var list_vertex = g.getRelevantCourses();
+            add_to_html_file_data_coures(list_vertex);
+            
+            
+        }
+
+
+    });
+
+
 }
 
 function if_have_user_name_show_me(user) {
@@ -163,6 +261,7 @@ function choose_course() {
     })
 
 }
+
 function choose_course_number() {
     var mySelect = $('#choose-course-number');
     $('#choose-info-number').on('click', function () {
