@@ -95,6 +95,14 @@ class Graph {
         }
         return "not found " + id
     }
+    find_by_name(name) {
+        for (const [key, vertex] of Object.entries(this.VertexList)) {
+            if (vertex.getName() == name) {
+                return vertex;
+            }
+        }
+        return "not found " + name
+    }
     printGraph() {
         for (var i = 0; i < this.VertexList.length; i++) {
             var out = this.VertexList[i].getAdjOutList();

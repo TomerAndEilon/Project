@@ -18,6 +18,21 @@ $(document).ready(function () {
 });
 
 function make_graph() {
+    function remove_node_with_list(graph){
+        let list_to_remove = $('#choose-course option:selected').selectpicker('val');
+        for (let i = 0; i < list_to_remove.length; i++) {
+            for (let j = 0; j < graph.VertexList.length; j++) {
+                if($(list_to_remove[i]).data('id')==graph.VertexList[j].getId()){
+                    graph.deleteNode(graph.VertexList[j].getId());
+                }
+                                
+            }
+        }
+    }
+    function filter_all(list_vertex){
+        list_vertex = filter_by_number_of_course(list_vertex);
+        return list_vertex;
+    }
     function filter_by_number_of_course(list_vertex) {
 
         function get_list_with_unquie_numer(size) {
@@ -105,9 +120,10 @@ function make_graph() {
             }
             const event = new Date();
             g.connectBetweenCourseslist();
+            remove_node_with_list(g);
             // g.printGraph();
             var list_vertex = g.getRelevantCourses();
-            list_vertex = filter_by_number_of_course(list_vertex);
+            list_vertex =  filter_all(list_vertex);
             add_to_html_file_data_coures(list_vertex);
             
             
@@ -137,9 +153,10 @@ function make_graph() {
             }
             const event = new Date();
             g.connectBetweenCourseslist();
+            remove_node_with_list(g);
             // g.printGraph();
             var list_vertex = g.getRelevantCourses();
-            list_vertex = filter_by_number_of_course(list_vertex);
+            list_vertex =  filter_all(list_vertex);
             add_to_html_file_data_coures(list_vertex);
             
             
@@ -170,6 +187,11 @@ function make_graph() {
             const event = new Date();
             g.connectBetweenCourseslist();
             // g.printGraph();
+            remove_node_with_list(g);
+            console.log("-=-=-=-=");
+            
+            // g.printGraph();
+            
             var list_vertex = g.getRelevantCourses();
             add_to_html_file_data_coures(list_vertex);
             
