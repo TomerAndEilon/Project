@@ -97,6 +97,7 @@
     
     ///login with facebook
     $("#facebook-btn").click(function () {
+        console.log("click on Facebook btn")
         var provider = new firebase.auth.FacebookAuthProvider();
         firebase.auth().signInWithRedirect(provider);
     });
