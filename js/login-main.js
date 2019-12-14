@@ -92,8 +92,13 @@
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithRedirect(provider);
     });
-
-
+    
+    ///login with facebook
+    $("#facebook-btn").click(function () {
+        var provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
+    });
+    
 
 
 
