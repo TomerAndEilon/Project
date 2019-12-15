@@ -6,7 +6,7 @@ $(document).ready(function () {
     is_login();
     logout();
     update_data_to_profile();
-    console.log("ready!");
+    make_html_builds()
     choose_course();
     choose_course_number();
     make_graph();
@@ -16,7 +16,37 @@ $(document).ready(function () {
 
     console.log("end!");
 });
+function make_html_builds(){
+    function make_html_in_remove_couses(arr) {
+        string_option = ""
+        $("#choose-course").empty();
+        for (let index = 0; index < arr.length; index++) {
+            console.log('<option data-id='+arr[index].id+'>'+arr[index].name+'</option>');
+            $("#choose-course").append(
+                '<option data-id='+arr[index].id+'>'+arr[index].name+'</option>'
+            );
+            string_option +='<option data-id='+arr[index].id+'>'+arr[index].name+'</option>';
+        }
+        $("#choose-course").html(string_option).selectpicker('refresh');
+    }
+    var url_json_course ="https://tomerandeilon.github.io/Project/datajsonvalue.json";
 
+    requestURL = url_json_course;
+    var request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'text'; // now we're getting a string!
+    request.send();
+
+    request.onload = function () {
+        const arrText = request.response; // get the string from the response
+        const arr = JSON.parse(arrText); // convert it to an object
+        console.log(arr);
+        make_html_in_remove_couses(arr)
+    };
+    
+       
+
+}
 function make_graph() {
     function remove_node_with_list(graph){
         let list_to_remove = $('#choose-course option:selected').selectpicker('val');
@@ -99,10 +129,22 @@ function make_graph() {
         $("#table-row").css("display", "block");
         
     }
+    // function build_Graph() {
+    //     var g = new Graph();
+    //     requestURL = "https://tomerandeilon.github.io/Project/datajsonvalue.json"
+    //     var request = new XMLHttpRequest();
+    //     request.open('GET', requestURL);
+    //     request.responseType = 'text'; // now we're getting a string!
+    //     request.send();
+    // }
+    var url_json_course ="https://tomerandeilon.github.io/Project/datajsonvalue.json"
+
+
     $("#choose-for-me-btn").on("click", function () {
+        console.log("in תציעל לי");
         var g = new Graph();
-        requestURL = "https://tomerandeilon.github.io/Project/datajsonvalue.json"
-        let request = new XMLHttpRequest();
+        requestURL = url_json_course;
+        var request = new XMLHttpRequest();
         request.open('GET', requestURL);
         request.responseType = 'text'; // now we're getting a string!
         request.send();
@@ -134,8 +176,8 @@ function make_graph() {
 
     $("#show-me-more").on("click", function () {
         var g = new Graph();
-        requestURL = "https://tomerandeilon.github.io/Project/datajsonvalue.json"
-        let request = new XMLHttpRequest();
+        requestURL = url_json_course;
+        var request = new XMLHttpRequest();
         request.open('GET', requestURL);
         request.responseType = 'text'; // now we're getting a string!
         request.send();
@@ -166,9 +208,9 @@ function make_graph() {
     });
 
     $("#show-me-all").on("click", function () {
-        var g = new Graph();
-        requestURL = "https://tomerandeilon.github.io/Project/datajsonvalue.json"
-        let request = new XMLHttpRequest();
+       var g = new Graph();
+        requestURL = url_json_course;
+        var request = new XMLHttpRequest();
         request.open('GET', requestURL);
         request.responseType = 'text'; // now we're getting a string!
         request.send();
