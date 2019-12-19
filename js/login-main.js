@@ -1,4 +1,5 @@
 
+var firstTime = false;
 (function ($) {
     "use strict";
 
@@ -58,9 +59,18 @@
         if (user) {
             userNow2 = user
             console.log(user);
-            window.location.href = "index.html";
-        } else {
+            if(firstTime){
+                window.location.href = "profile.html";
+                console.log("profile");
+            }
+            
+            else{
+                window.location.href = "index.html";
+                console.log("index");
 
+            }
+            
+        } else {
             console.log("not loging");
         }
     });
@@ -132,6 +142,7 @@
     //sign up  bt on main page
     $("#signup").click(function () {
         window.location.href = "signup.html";
+        firstTime = true;
     });
 
     $("#username-password").click(function () {
@@ -260,7 +271,7 @@
         localStorage.setItem("bday", bday);
         localStorage.setItem("gender", gender);
         localStorage.setItem("signup","yes");
-
+        firstTime = true;
        
 
         var okToMove = true;
@@ -285,8 +296,8 @@
 
             if (okToMove === true) {
                 
-
-                window.location.href = "index.html";
+                console.log("profile");
+                window.location.href = "profile.html";
             }
         }, 3000)
     });
