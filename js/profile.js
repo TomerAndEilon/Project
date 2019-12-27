@@ -1,10 +1,129 @@
 $(document).ready(function () {
     is_login();
     readPdf();
+    search_table();
+    make_html_builds();
+    chenge_progress();
 
 
 
 
+
+
+
+});
+
+
+function get_result_in_precent_where_you_are() {
+
+    var arr = $('.checkthis:checkbox:checked');
+
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        sum += parseFloat($(arr[i]).data("value"));
+    }
+    console.log("sum:" + sum);
+
+    let percent_degre = sum / 126 * 100;
+    percent_degre = parseFloat(percent_degre).toFixed(2)
+    console.log(percent_degre);
+    $("#progress-bar-course-student").attr("aria-valuenow", percent_degre);
+    $("#progress-bar-course-student").html(percent_degre + "%");
+    $("#progress-bar-course-student").css("width", percent_degre + "%");
+
+
+}
+
+
+function chenge_progress() {
+    $("#table-course-profile").change(function () {
+
+
+        get_result_in_precent_where_you_are();
+
+    });
+
+}
+
+function make_html_builds() {
+
+    function remove_dubli_cousre(arr) {
+        let uniqueArray = [];
+        let inArr = false;
+        for (let i = 0; i < arr.length; i++) {
+            let val = arr[i];
+            inArr = false;
+            for (let j = 0; j < uniqueArray.length; j++) {
+                if (val.id.localeCompare(uniqueArray[j].id) == 0) {
+                    inArr = true;
+                    break;
+                }
+            }
+            if (!inArr)
+                uniqueArray.push(val);
+
+        }
+        return uniqueArray;
+
+    }
+
+    function mergeArray(arr) {
+        let merged_arr = [];
+        Object.entries(arr).forEach(([key, value]) => {
+
+            merged_arr = merged_arr.concat(value)
+        });
+
+        return merged_arr
+    }
+    function make_html_in_remove_couses(arr) {
+
+        $("#table-course-profile").empty();
+        for (let index = 0; index < arr.length; index++) {
+
+            $("#table-course-profile").append(
+                '<tr>' +
+                '<td><input  id="coures-' + arr[index].id + '" data-id="' + arr[index].id + '" data-name="' + arr[index].name + '" data-value="' + arr[index].value + '"  type="checkbox" class="checkthis coures-ids" /></td>' +
+                '<td>' + arr[index].name + '</td>' +
+                '<td>' + arr[index].value + '</td>' +
+                '<th scope="row">' + arr[index].id + '</th>' +
+                '</tr>'
+            );
+        }
+
+
+
+    }
+    var url_json_course = "https://tomerandeilon.github.io/Project/courses.json";
+
+    requestURL = url_json_course;
+    var request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'text'; // now we're getting a string!
+    request.send();
+
+    request.onload = function () {
+        const arrText = request.response; // get the string from the response
+        let arr = JSON.parse(arrText); // convert it to an object
+
+
+        arr = mergeArray(arr);//arr["General courses"];
+
+        let uniqueArr = remove_dubli_cousre(arr);
+
+        console.log(uniqueArr);
+
+
+
+        make_html_in_remove_couses(uniqueArr)
+
+    };
+
+
+
+}
+
+function search_table() {
     $(".search").keyup(function () {
         var searchTerm = $(".search").val();
         var listItem = $('.results tbody').children('tr');
@@ -31,10 +150,7 @@ $(document).ready(function () {
         else { $('.no-result').hide(); }
     });
 
-
-
-
-});
+}
 
 function is_login() {
     var firebaseConfig = {
@@ -61,9 +177,9 @@ function is_login() {
             console.log(user);
             $("#logout-btn").css("display", "block");
             $("#login-btn").css("display", "none");
-            
+
         } else {
-            $("#hello-user").css("display","none");
+            $("#hello-user").css("display", "none");
             $("#logout-btn").css("display", "none");
             $("#login-btn").css("display", "block");
             console.log("not loging");
@@ -72,30 +188,30 @@ function is_login() {
 }
 
 
- 
+
 
 
 function readPdf() {
     var fileButton = document.getElementById('photo-upload');
     fileButton.addEventListener('change', function (e) {
+        make_html_builds();
 
+        //Step 1: Get the file from the input element                
 
-                //Step 1: Get the file from the input element                
-                
 
         var file = e.target.files[0];
 
         //Step 2: Read the file using file reader
-        var fileReader = new FileReader();  
+        var fileReader = new FileReader();
 
-        fileReader.onload = function() {
+        fileReader.onload = function () {
 
             //Step 4:turn array buffer into typed array
             var typedarray = new Uint8Array(this.result);
 
             //Step 5:PDFJS should be able to read this
-            pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
-              makeroyipdf(pdf);
+            pdfjsLib.getDocument(typedarray).promise.then(function (pdf) {
+                makeroyipdf(pdf);
             });
 
 
@@ -103,46 +219,73 @@ function readPdf() {
         //Step 3:Read the file as ArrayBuffer
         fileReader.readAsArrayBuffer(file);
 
-      
+
 
 
 
 
     });
-    
+
 }
 
 function makeroyipdf(pdf) {
+    function update_course_table_after_parser(list_ids_course) {
+        let element_to_check = document.querySelectorAll('[data-id]');
+
+
+        for (let index = 0; index < list_ids_course.length; index++) {
+
+            for (let j = 0; j < element_to_check.length; j++) {
+                if (String(list_ids_course[index]).localeCompare($(element_to_check[j]).data("id")) == 0) {
+                    $(element_to_check[j]).prop('checked', true);
+                }
+
+
+            }
+
+
+
+        }
+
+        $("#pdf-input-p").text("הנתונים עודכנו");
+        $("#pdf-input-p").css("color", "green");
+        $("#pdf-input-p").css("font-weight", " bold");
+
+
+
+
+    }
     //
     // Fetch the first page
     //
-    let str = [];
+    var course_students = new Array();
     for (let i = 1; i <= pdf.numPages; i++) {
         pdf.getPage(i).then(function (page) {
             page.getTextContent().then(function (textContent) {
                 for (let j = 0; j < textContent.items.length; j++) {
                     var line = textContent.items[j].str;
                     if (/\d\d\d\-\d*\-\d\d.*$/.test(line)) {
-                        str.push(line.match(/\d\d\d\-\d*/g));
-                        // str.push(line);
-                        console.log(textContent.items[j].str);
+
+
+                        course_students.push(line.match(/(\d\d\d\d\d\d\d)/g));
+
                     }
                 }
+
             });
         });
 
     }
-    // setTimeout(function () {
-    //     var txt;
-    //     txt = "";
-    //     for (let i = 0; i < str.length; i++) {
-    //         txt = txt + str[i] + " '<br>' ";
-    //         console.log(str[i] + "kokoko");
 
-    //     }
-    //     txt = txt + "len:" + str.length + " '<br>' "
-    //     document.getElementById("code").innerHTML = txt;
-    // }, 2000)
+
+    setTimeout(function () {
+        update_course_table_after_parser(course_students);
+
+    }, 2000);
+    setTimeout(function () {
+        get_result_in_precent_where_you_are();
+
+    }, 3000);
 
 
 
