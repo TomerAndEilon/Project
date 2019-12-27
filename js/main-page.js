@@ -10,15 +10,15 @@ $(document).ready(function() {
 });
 
 
-function if_have_user_name_show_me(user){
-    setTimeout(function(){
-        if (user.displayName != null){
-            $("#hello-user").text("שלום "+ user.displayName);
-            $("#hello-user").css("display","block");
-        }
-    },1000);
+// function if_have_user_name_show_me(user){
+//     setTimeout(function(){
+//         if (user.displayName != null){
+//             $("#hello-user").text("שלום "+ user.displayName);
+//             $("#hello-user").css("display","block");
+//         }
+//     },1000);
     
-}
+// }
 function logout(){
     $("#logout-btn").on("click", function () {
         var user = firebase.auth().currentUser;
@@ -30,6 +30,15 @@ function logout(){
       });
 }
 function update_data_to_profile(){
+    function if_have_user_name_show_me(user){
+        setTimeout(function(){
+            if (user.displayName != null){
+                $("#hello-user").text("שלום "+ user.displayName);
+                $("#hello-user").css("display","block");
+            }
+        },1000);
+        
+    }
     setTimeout(function () {
         var user = firebase.auth().currentUser;
         console.log(user.displayName)
