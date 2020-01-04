@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/bootstrap-select.css">
 
-<!-- #region -->
+  <!-- #region -->
 
 </head>
 
@@ -151,84 +151,87 @@
 
 
     <div class="row">
-      <div class="col-md-10">
-      
-       </div>
-      <div class="col-md-10">
+      <div class="col-md-8">
         <input id="photo-upload" type="file" placeholder="pdf_file" accept="application/pdf">
-        <progress id="uploader" value="0" max="100">0%</progress>
-       </div>
+        <p id="pdf-input-p"></p>
+      </div>
+      <div class="col-md-4">
+        <p>איפה אתה בתואר</p>
+          <div class="progress">
+              <div id="progress-bar-course-student"  class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+            </div>
+      </div>
     </div>
-    
-  
+    <!-- /.row -->
+
     <div class="row">
       <div class="col-md-10">
-      
-       </div>
+
+      </div>
       <div class="col-md-10">
-      <p>שים לב כי במידה ולא יבחר דבר ההעדפות שלך יאותחלו אוטומטית להעדפות ברירת מחדל</p>
-       </div>
+        <p>שים לב כי במידה ולא יבחר דבר ההעדפות שלך יאותחלו אוטומטית להעדפות ברירת מחדל</p>
+      </div>
     </div>
-  </div>
-  
-  <div class="container">
+    <!-- /.row -->
     <div class="row">
       <div class="col-md-12">
         <h2>הקורסים שעברתי</h2>
         <hr>
         <div class="form-group pull-right">
           <input type="text" class="search form-control" placeholder="חפש קורס">
-      </div>
-      <span class="counter pull-right"></span>
-      <table class="table table-hover table-bordered results">
-        <thead>
-          <tr>
-            <th></th>
-            <th class="col-md-5 col-xs-5">שם קורס</th>
-            <th class="col-md-4 col-xs-4">קוד קורס</th>
-          </tr>
-          <tr class="warning no-result">
-            <td colspan="4"><i class="fa fa-warning"></i>לא נמצאו קורסים</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><input type="checkbox" class="checkthis" /></td>
-            <td>python</td>
-            <th scope="row">1</th>
-          </tr>
-          <tr>
-            <td><input type="checkbox" class="checkthis" /></td>
-            <td>דיסקרטית</td>
-            <th scope="row">2</th>
-          </tr>
-          <tr>
-            <td><input type="checkbox" class="checkthis" /></td>
-            <td>שימושית</td>
-            <th scope="row">3</th>
-          </tr>
-          <tr>
-            <td><input type="checkbox" class="checkthis" /></td>
-            <td>לינארית</td>
-            <th scope="row">4</th>
-          </tr>
-          <tr>
-            <td><input type="checkbox" class="checkthis" /></td>
-            <td>אוטומטים</td>
-            <th scope="row">5</th>
-          </tr>
+        </div>
+        <span class="counter pull-right"></span>
+        <table class="table table-hover table-bordered results">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="col-md-5 col-xs-5">שם קורס</th>
+              <th class="col-md-5 col-xs-5">נקודות זכות</th>
+              <th class="col-md-4 col-xs-4">קוד קורס</th>
+            </tr>
+            <tr class="warning no-result">
+              <td colspan="4"><i class="fa fa-warning"></i>לא נמצאו קורסים</td>
+            </tr>
+          </thead>
+          <tbody id="table-course-profile">
+            <tr>
+              <td><input type="checkbox" class="checkthis" /></td>
+              <td>python</td>
+              <th scope="row">1</th>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkthis" /></td>
+              <td>python</td>
+              <th scope="row">1</th>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkthis" /></td>
+              <td>דיסקרטית</td>
+              <th scope="row">2</th>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkthis" /></td>
+              <td>שימושית</td>
+              <th scope="row">3</th>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkthis" /></td>
+              <td>לינארית</td>
+              <th scope="row">4</th>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkthis" /></td>
+              <td>אוטומטים</td>
+              <th scope="row">5</th>
+            </tr>
 
-        </tbody>
-      </table>
+          </tbody>
+        </table>
 
       </div>
     </div>
+    <!-- /.row -->
 
-  </div>
-  </div>
-
-  
-  <div class="container">
     <div class="row">
       <a class="btn btn-primary btn-lg text-center" href="#">שמור &raquo;</a>
 
@@ -274,11 +277,11 @@
   <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
   <!-- Add Firebase products that you want to use -->
-  
- 
- 
 
-  
+
+
+
+
 
 </body>
 
