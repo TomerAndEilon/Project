@@ -4,7 +4,7 @@ $(document).ready(function () {
     search_table();
     make_html_builds();
     chenge_progress();
-    update_data_to_profile();
+
 
 
 
@@ -12,34 +12,6 @@ $(document).ready(function () {
 
 
 });
-
-function update_data_to_profile(){
-    function if_have_user_name_show_me(user){
-        setTimeout(function(){
-            if (user.displayName != null){
-                $("#hello-user").text("שלום "+ user.displayName);
-                $("#hello-user").css("display","block");
-            }
-        },1000);
-        
-    }
-    setTimeout(function () {
-        var user = firebase.auth().currentUser;
-        console.log(user.displayName)
-        console.log(localStorage.getItem("fullname"))
-        if (user.displayName == null){
-            user.updateProfile({
-                displayName: localStorage.getItem("fullname")
-              }).then(function () {
-                console.log("work update user name");
-              }).catch(function (error) {
-                // An error happened.
-                console.log("error update user name");
-              });
-        }
-        if_have_user_name_show_me(user)
-    },3000);
-}
 
 
 function get_result_in_precent_where_you_are() {
