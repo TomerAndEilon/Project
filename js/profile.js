@@ -194,6 +194,12 @@ function search_table() {
 }
 
 function is_login() {
+    function add_user_name_on_nav(user){
+        if (user.displayName != null){
+            $("#hello-user").text("שלום "+ user.displayName);
+            $("#hello-user").css("display","block");
+        }
+    }
     var firebaseConfig = {
         apiKey: "AIzaSyC5TD5bZiZz40XmGIFdjM5nIwga_QBTlBM",
         authDomain: "projectet-8baf2.firebaseapp.com",
@@ -214,8 +220,9 @@ function is_login() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-            userNow2 = user
+            userNow2 = user;
             console.log(user);
+            add_user_name_on_nav(user);
             $("#logout-btn").css("display", "block");
             $("#login-btn").css("display", "none");
 

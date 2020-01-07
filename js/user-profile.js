@@ -2,23 +2,29 @@
 $(document).ready(function() {
     console.log( "ready!" );
     //check if loging?
-    is_login()
+    is_login();
     // add lisaner to the logout button
-    logout()
-    update_data_to_profile()
+    logout();
+    //add user name to the top
+   
+    update_user_name_and_email_to_info();
+   
     
 });
 
-
-function if_have_user_name_show_me(user){
+function update_user_name_and_email_to_info(){
     setTimeout(function(){
-        if (user.displayName != null){
-            $("#hello-user").text("שלום "+ user.displayName);
-            $("#hello-user").css("display","block");
-        }
+    var user = firebase.auth().currentUser;
+        $("#profile-user-name").html("שם: "+ user.displayName);
+        $("#profile-user-email").html("מייל: "+ user.email);
+    
     },1000);
     
 }
+
+
+
+
 function logout(){
     $("#logout-btn").on("click", function () {
         var user = firebase.auth().currentUser;
@@ -29,24 +35,7 @@ function logout(){
         });
       });
 }
-function update_data_to_profile(){
-    setTimeout(function () {
-        var user = firebase.auth().currentUser;
-        console.log(user.displayName)
-        console.log(localStorage.getItem("fullname"))
-        if (user.displayName == null){
-            user.updateProfile({
-                displayName: localStorage.getItem("fullname")
-              }).then(function () {
-                console.log("work update user name");
-              }).catch(function (error) {
-                // An error happened.
-                console.log("error update user name");
-              });
-        }
-        if_have_user_name_show_me(user)
-    },3000);
-}
+
 function is_login() {
     function add_user_name_on_nav(user){
         if (user.displayName != null){
