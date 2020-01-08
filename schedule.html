@@ -106,33 +106,37 @@
 
   <!-- Page Content -->
   <div class="container">
-
-
-  </div>
   <!-- /.row -->
   <div class="row">
-      <div class="col-md-2  mb-5">
-
-      </div>
-
+      
+    <div class="col-md-4  mb-5">
+       <p>סמסטר קרוב</p>
+       <select id="choose-course-number" class="selectpicker"  data-hide-disabled="true" data-live-search="true" data-size="5">
+        <option selected>א</option>
+        <option >ב</option>  
+      </select>
+      
+    </div>
+<!-- /.row -->
+  
+</div>
+  <div class="row">
+      <p style="color: blueviolet;">אנא סמן את ההעדפות שלך בכדי שנוכל להתאים לך את המערכת בצורה המיטבית</p>
+  </div>
+  <div class="row">
+      
       <div class="col-md-4  mb-5">
-         <p>יש לבחור את את הקורסים שכבר עשיתה</p>
-          <select id="choose-course" class="selectpicker" multiple data-hide-disabled="true" data-live-search="true" data-size="5">
-              <option data-id="0" >אלגברה מודרנית</option>
-              <option data-id="1">ארגון ותכנות המחשב</option>
-              <option data-id="2">חדו''א 1</option>
-              <option data-id="3" >חדו''א 2</option>
-              <option data-id="4">מבוא למדעי המחשב</option>
-              <option data-id="5">אלגברה ליניארית למדעי המחשב</option>
-              <option data-id="6">מבוא לתכנות מערכות</option>
-              <option data-id="7">מבוא להסתברות</option>
-              <option data-id="8"> מתמטיקה דיסקרטית</option data-id="">
-              <option data-id="9">תכנות מונחה עצמים ג'אווה</option>
-              <option data-id="10">תכנות בשפת ++C</option>
-              
-            </select>
-            <button id="choose-info" class="btn btn-light">choose</button>
-            <button id="choose-reset-btn" class="btn btn-light">reset</button>
+         <p>מרווח ימים בין מבחנים</p>
+         <select id="choose-course-number" class="selectpicker"  data-hide-disabled="true" data-live-search="true" data-size="5">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option selected >4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>  
+        </select>
         
       </div>
 
@@ -146,10 +150,8 @@
                <option>5</option>
                <option>6</option>
                <option>7</option>
-               <option>8</option>
-              
+               <option>8</option>  
              </select>
-             <button id="choose-info-number" class="btn btn-light">choose</button>
              
          
        </div>
@@ -184,7 +186,7 @@
               <th scope="col">קורסים</th>
               <th scope="col">נקודות זכות</th>
               
-            </tr>
+             </tr>
           </thead>
           <tbody>
             <tr>
@@ -210,6 +212,7 @@
         </table>
       </div>
    </div>
+  </div>
   <!-- /.container -->
 
   <!-- Footer -->
