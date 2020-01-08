@@ -7,8 +7,6 @@ $(document).ready(function () {
     logout();
     update_data_to_profile();
     make_html_builds()
-    choose_course();
-    choose_course_number();
     make_graph();
 
 
@@ -29,7 +27,7 @@ function make_html_builds(){
         }
         $("#choose-course").html(string_option).selectpicker('refresh');
     }
-    var url_json_course ="https://tomerandeilon.github.io/Project/datajsonvalue.json";
+    var url_json_course ="https://tomerandeilon.github.io/Project/courses.json";
 
     requestURL = url_json_course;
     var request = new XMLHttpRequest();
@@ -137,7 +135,7 @@ function make_graph() {
     //     request.responseType = 'text'; // now we're getting a string!
     //     request.send();
     // }
-    var url_json_course ="https://tomerandeilon.github.io/Project/datajsonvalue.json"
+    var url_json_course ="https://tomerandeilon.github.io/Project/courses.json"
 
 
     $("#choose-for-me-btn").on("click", function () {
@@ -146,26 +144,32 @@ function make_graph() {
         requestURL = url_json_course;
         var request = new XMLHttpRequest();
         request.open('GET', requestURL);
-        request.responseType = 'text'; // now we're getting a string!
+        request.responseType = 'json'; // now we're getting a string!
         request.send();
 
         request.onload = function () {
             const arrText = request.response; // get the string from the response
-            const arr = JSON.parse(arrText); // convert it to an object
-            runG(arr);
+            let arr;
+            let software = arrText.software;
+            
+                // convert it to an object
+            runG(arrText);
         };
 
        
         function runG(arr) {
-            for (i in arr) {
-                g.addVertex(new Vertex(arr[i]));
+            for(i in arr){
+                let obj = arr[i]
+                for (let j = 0; j < obj.length; j++) {
+                    g.addVertex(new Vertex(obj[j]));
+                }
             }
             const event = new Date();
             g.connectBetweenCourseslist();
             remove_node_with_list(g);
             // g.printGraph();
             var list_vertex = g.getRelevantCourses();
-            list_vertex =  filter_all(list_vertex);
+            //list_vertex =  filter_all(list_vertex);
             add_to_html_file_data_coures(list_vertex);
             
             
@@ -319,32 +323,5 @@ function is_login() {
 }
 
 
-function choose_course() {
-    var mySelect = $('#choose-course');
-    $('#choose-info').on('click', function () {
-        localStorage.setItem("course_allready_done", mySelect.selectpicker('val'))
-        console.log(mySelect.selectpicker('val'));
-        mySelect.selectpicker('refresh');
-    });
-    //reset btn
-    $("#choose-reset-btn").on('click', function () {
-        console.log("in the reset btn")
-        mySelect.selectpicker('deselectAll');
-    })
 
-}
 
-function choose_course_number() {
-    var mySelect = $('#choose-course-number');
-    $('#choose-info-number').on('click', function () {
-        localStorage.setItem("course_number", mySelect.selectpicker('val'))
-        console.log(mySelect.selectpicker('val'));
-        mySelect.selectpicker('refresh');
-    });
-    //reset btn
-    $("#choose-number-reset-btn").on('click', function () {
-        console.log("in the reset btn")
-        mySelect.selectpicker('deselectAll');
-    })
-
-}
