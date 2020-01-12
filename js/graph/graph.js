@@ -1,5 +1,5 @@
 class Vertex {
-    constructor(details) {
+    constructor(details,category) {
         this.details = details;
         this.name = details.name;
         this.id = details.id;
@@ -7,6 +7,7 @@ class Vertex {
         this.condition = details.condition;
         this.AdjInList = [];
         this.AdjOutList = [];
+        this.category = category;
     }
     addToAdjOutList(v) {
         this.AdjOutList.push(v);
@@ -132,6 +133,11 @@ class Graph {
                 list_ver.push(this.VertexList[i]);
             }
         }
+        list_ver.sort(function(a, b){
+            if(a.category < b.category) return -1;
+            if(a.category > b.category) return 1;
+            return 0;
+        })
         return list_ver
     }
 
