@@ -111,7 +111,7 @@
       <div class="col-md-6 mb-5">
         <h2>איזה שנה אתה בתואר?</h2>
         <hr>
-        <select id="choose-course-number" class="selectpicker" data-hide-disabled="true" data-live-search="true"
+        <select id="choose-year-number" class="selectpicker" data-hide-disabled="true" data-live-search="true"
           data-size="4">
           <option selected>1</option>
           <option>2</option>
@@ -123,13 +123,13 @@
       <div class="col-md-6 mb-5">
         <h2>איזה מקבץ מגמה?</h2>
         <hr>
-        <select id="choose-course-number" class="selectpicker" data-hide-disabled="true" data-live-search="true"
+        <select id="choose-pro-courses" class="selectpicker" data-hide-disabled="true" data-live-search="true"
           data-size="5" multiple>
-          <option>פיתוח תוכנה</option>
-          <option>אינטרנט</option>
-          <option >עיבוד  אותות</option>
-          <option>רשתות</option>
-          <option>בינה מלאכותית</option>
+          <option id="software">פיתוח תוכנה</option>
+          <option id="Internet technology">אינטרנט</option>
+          <option id="Signal Processing">עיבוד  אותות</option>
+          <option id="Real-time systems and networks">רשתות</option>
+          <option id="Computational Learning and Artificial Intelligence">בינה מלאכותית</option>
           
         </select>
 
@@ -247,7 +247,7 @@
     <!-- /.row -->
 
     <div class="row">
-      <a class="btn btn-primary btn-lg text-center" href="#">שמור &raquo;</a>
+      <a  id="save-user-info" class="btn btn-primary btn-lg text-center" href="#">שמור &raquo;</a>
 
     </div>
   </div>
