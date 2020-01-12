@@ -1,8 +1,12 @@
 class Vertex {
-    constructor(details,category) {
+    constructor(details, category) {
         this.details = details;
         this.name = details.name;
-        this.id = details.id;
+        let prevId = details.id
+        var numberPattern = /\d+/g;
+        let validId = prevId.match(numberPattern)
+        this.id = validId;
+        console.log(this.id)
         this.value = details.value
         this.condition = details.condition;
         this.AdjInList = [];
@@ -55,7 +59,6 @@ class Graph {
     addEdge(from, to) {
         var vartexFrom = this.getFromVertexList(from.getId());
         var vartexTo = this.getFromVertexList(to.getId());
-
         vartexFrom.addToAdjOutList(vartexTo);
         vartexTo.addToAdjInList(vartexFrom);
     }
@@ -64,7 +67,7 @@ class Graph {
         for (var i = 0; i < this.VertexList.length; i++) {
             if (this.VertexList[i].getCond() != "") {
                 for (var j = 0; j < this.VertexList.length; j++) {
-                    if (this.VertexList[j].getId() == this.VertexList[i].getCond()) {
+                    if (this.arraysEqual(this.VertexList[j].getId(),this.VertexList[i].getCond())) {
                         g.addEdge(this.VertexList[j], this.VertexList[i]);
                     }
 
@@ -78,7 +81,7 @@ class Graph {
                 for (const [key, condobj] of Object.entries(this.VertexList[i].getCond())) {
 
                     for (var j = 0; j < this.VertexList.length; j++) {
-                        if (this.VertexList[j].getId() == condobj) {
+                        if (this.arraysEqual(this.VertexList[j].getId(),condobj)) {
                             this.addEdge(this.VertexList[j], this.VertexList[i]);
                         }
 
@@ -90,7 +93,7 @@ class Graph {
     }
     find(id) {
         for (const [key, vertex] of Object.entries(this.VertexList)) {
-            if (vertex.getId() == id) {
+            if (this.arraysEqual(vertex.getId(),id)) {
                 return vertex;
             }
         }
@@ -98,7 +101,7 @@ class Graph {
     }
     find_by_name(name) {
         for (const [key, vertex] of Object.entries(this.VertexList)) {
-            if (vertex.getName() == name) {
+            if (this.arraysEqual(vertex.getName(),name)) {
                 return vertex;
             }
         }
@@ -124,18 +127,18 @@ class Graph {
         }
     }
     getRelevantCourses() {
-      
+
         var list_ver = new Array()
-        
+
         for (var i = 0; i < this.VertexList.length; i++) {
             var inCond = this.VertexList[i].getAdjInList();
-            if (inCond.length == 0){
+            if (inCond.length == 0) {
                 list_ver.push(this.VertexList[i]);
             }
         }
-        list_ver.sort(function(a, b){
-            if(a.category < b.category) return -1;
-            if(a.category > b.category) return 1;
+        list_ver.sort(function (a, b) {
+            if (a.category < b.category) return -1;
+            if (a.category > b.category) return 1;
             return 0;
         })
         return list_ver
@@ -143,13 +146,27 @@ class Graph {
 
     getFromVertexList(id) {
         for (var i = 0; i < this.VertexList.length; i++) {
-            if (this.VertexList[i].getId() == id)
+            if (this.arraysEqual(this.VertexList[i].getId(),id))
                 return this.VertexList[i];
         }
     }
+
+    arraysEqual(a, b) {
+        if (a === b) return true;
+        if (a == null || b == null) return false;
+        if (a.length != b.length) return false;
+
+        for (var i = 0; i < a.length; ++i) {
+            if (a[i] !== b[i]) return false;
+        }
+        return true;
+    }
+
     deleteNode(nodeId) {
         for (var i = 0; i < this.VertexList.length; i++) {
-            if (this.VertexList[i].getId() == nodeId) {
+            if (this.arraysEqual(this.VertexList[i].getId(), nodeId) == true) {
+                console.log("delete")
+                console.log(this.VertexList[i].getName())
                 var out = this.VertexList[i].getAdjOutList();
                 for (var j = 0; j < out.length; j++) {
                     var vertex = this.getFromVertexList(out[j].getId());
@@ -160,6 +177,8 @@ class Graph {
             }
         }
     }
+
+
 
     // bfs(v) 
     // dfs(v) 
