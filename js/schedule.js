@@ -1,5 +1,5 @@
 
-
+var data_user;
 console.log("what hepand")
 $(document).ready(function () {
     console.log("start");
@@ -118,7 +118,7 @@ function make_graph() {
             
             $("#in-data-table").append(
                 '<tr>'+
-                '<th scope="row">'+(index+1)+'</th>' +
+                '<th scope="row">'+list_vertex[index].getId()+'</th>' +
                 '<td>'+list_vertex[index].getName()+'</td>'+
                 '<td>'+list_vertex[index].getValue()+'</td>'+  
             ' </tr>'
@@ -154,27 +154,47 @@ function make_graph() {
 
        
         function runG(arr) {
-            let mikbaz =[];
-            mikbaz.push('software');
-            mikbaz.push('Signal Processing');
-            for(i in arr){
-                let obj = arr[i]
-                for (let j = 0; j < obj.length; j++) {
-                    if(mikbaz.includes(i))
-                     g.addVertex(new Vertex(obj[j],2));
-                     else if(i == 'General courses')
-                     g.addVertex(new Vertex(obj[j],1));
-                     else
-                     g.addVertex(new Vertex(obj[j],3));
+            function build_graph_and_delete(params,arr) {
+                console.log(arr);
+                for(i in arr){
+                    let obj = arr[i]
+                    for (let j = 0; j < obj.length; j++) {
+                        if(params["list_pro_coures"].includes(i)){
+                            g.addVertex(new Vertex(obj[j],2));
+                            console.log(i)
+                        } 
+                         else if(i == 'General courses')
+                         g.addVertex(new Vertex(obj[j],1));
+                         else
+                         g.addVertex(new Vertex(obj[j],3));
+                    }
                 }
+                const event = new Date();
+                console.log(params["list_done_coures"])
+                for (let i = 0; i < params["list_done_coures"].length; i++) {
+                    let number = params["list_done_coures"][i];
+                    var numberPattern = /\d+/g;
+                    let valid = number.match( numberPattern )
+                    console.log(valid)
+                    g.deleteNode(valid)
+                    
+                }
+                g.connectBetweenCourseslist();
+                remove_node_with_list(g);
+                // g.printGraph();
+                var list_vertex = g.getRelevantCourses();
+                //list_vertex =  filter_all(list_vertex);
+                add_to_html_file_data_coures(list_vertex);
+             
             }
-            const event = new Date();
-            g.connectBetweenCourseslist();
-            remove_node_with_list(g);
-            // g.printGraph();
-            var list_vertex = g.getRelevantCourses();
-            //list_vertex =  filter_all(list_vertex);
-            add_to_html_file_data_coures(list_vertex);
+            let userId = firebase.auth().currentUser.uid;
+            firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+                let params_data =  snapshot.val();
+                build_graph_and_delete(params_data,arr);
+            });
+            
+               
+            
             
             
         }
@@ -201,7 +221,7 @@ function make_graph() {
             for (i in arr) {
                 g.addVertex(new Vertex(arr[i]));
             }
-            const event = new Date();
+            
             g.connectBetweenCourseslist();
             remove_node_with_list(g);
             // g.printGraph();
@@ -308,11 +328,11 @@ function is_login() {
         firebase.initializeApp({});
     }
 
-    var userNow2
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-            userNow2 = user
+        
+            
             console.log(user);
             $("#logout-btn").css("display", "block");
             $("#login-btn").css("display", "none");

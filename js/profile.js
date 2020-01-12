@@ -6,7 +6,7 @@ $(document).ready(function () {
     chenge_progress();
     update_data_to_profile();
     logout();
-
+    update_to_db_after_click_save();
 
 
 
@@ -14,43 +14,80 @@ $(document).ready(function () {
 
 });
 
+function update_to_db_after_click_save() {
 
-function if_have_user_name_show_me(user){
-    setTimeout(function(){
-        if (user.displayName != null){
-            $("#hello-user").text("שלום "+ user.displayName);
-            $("#hello-user").css("display","block");
+    function writeUserData(userId, year, list_pro_coures, list_done_coures) {
+        firebase.database().ref('users/' + userId).set({
+            year: year,
+            list_pro_coures: list_pro_coures,
+            list_done_coures: list_done_coures
+        });
+    }
+    $("#save-user-info").click(function () {
+        var userId = firebase.auth().currentUser.uid;
+        let id_done_list = [];
+        let year_number = $('#choose-year-number').selectpicker('val');
+        let pro_coures = $('#choose-pro-courses').selectpicker('val');
+        
+        let coures_done_list = $('.coures-ids:checkbox:checked')
+        for (let i = 0; i < coures_done_list.length; i++) {
+            let courseNumber = $(coures_done_list[i]).data("id");
+            var numberPattern = /\d+/g;
+            let valid = courseNumber.match( numberPattern )
+            id_done_list.push(valid);
         }
-    },1000);
-    
+        if (userId != null) {
+            writeUserData(userId, year_number, pro_coures, id_done_list);
+        }
+
+
+
+
+    })
+
+
+
+
+
+
 }
-function logout(){
+
+function if_have_user_name_show_me(user) {
+    setTimeout(function () {
+        if (user.displayName != null) {
+            $("#hello-user").text("שלום " + user.displayName);
+            $("#hello-user").css("display", "block");
+        }
+    }, 1000);
+
+}
+function logout() {
     $("#logout-btn").on("click", function () {
         var user = firebase.auth().currentUser;
         firebase.auth().signOut().then(function () {
-          console.log("logout successful")
+            console.log("logout successful")
         }).catch(function (error) {
-          console.log("logout error " + error);
+            console.log("logout error " + error);
         });
-      });
+    });
 }
-function update_data_to_profile(){
+function update_data_to_profile() {
     setTimeout(function () {
         var user = firebase.auth().currentUser;
         console.log(user.displayName)
         console.log(localStorage.getItem("fullname"))
-        if (user.displayName == null){
+        if (user.displayName == null) {
             user.updateProfile({
                 displayName: localStorage.getItem("fullname")
-              }).then(function () {
+            }).then(function () {
                 console.log("work update user name");
-              }).catch(function (error) {
+            }).catch(function (error) {
                 // An error happened.
                 console.log("error update user name");
-              });
+            });
         }
         if_have_user_name_show_me(user)
-    },3000);
+    }, 3000);
 }
 
 
@@ -194,10 +231,10 @@ function search_table() {
 }
 
 function is_login() {
-    function add_user_name_on_nav(user){
-        if (user.displayName != null){
-            $("#hello-user").text("שלום "+ user.displayName);
-            $("#hello-user").css("display","block");
+    function add_user_name_on_nav(user) {
+        if (user.displayName != null) {
+            $("#hello-user").text("שלום " + user.displayName);
+            $("#hello-user").css("display", "block");
         }
     }
     var firebaseConfig = {
