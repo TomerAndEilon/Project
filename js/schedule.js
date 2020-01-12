@@ -148,20 +148,24 @@ function make_graph() {
         request.send();
 
         request.onload = function () {
-            const arrText = request.response; // get the string from the response
-            let arr;
-            let software = arrText.software;
-            
-                // convert it to an object
+            const arrText = request.response; 
             runG(arrText);
         };
 
        
         function runG(arr) {
+            let mikbaz =[];
+            mikbaz.push('software');
+            mikbaz.push('Signal Processing');
             for(i in arr){
                 let obj = arr[i]
                 for (let j = 0; j < obj.length; j++) {
-                    g.addVertex(new Vertex(obj[j]));
+                    if(mikbaz.includes(i))
+                     g.addVertex(new Vertex(obj[j],2));
+                     else if(i == 'General courses')
+                     g.addVertex(new Vertex(obj[j],1));
+                     else
+                     g.addVertex(new Vertex(obj[j],3));
                 }
             }
             const event = new Date();
