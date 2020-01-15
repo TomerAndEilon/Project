@@ -21,7 +21,17 @@ function update_to_db_after_click_save() {
             year: year,
             list_pro_coures: list_pro_coures,
             list_done_coures: list_done_coures
+        }, function(error) {
+            if (error) {
+              // The write failed...
+            } else {
+              // Data saved successfully!
+              window.location.href = "schedule.html";
+            }
+
         });
+    
+        
     }
     $("#save-user-info").click(function () {
         var userId = firebase.auth().currentUser.uid;
