@@ -4,6 +4,7 @@ var user_uid_main;
 var params_data;
 var graph;
 var listDoneCorses;
+var allCoursesJson;
 $(document).ready(function () {
     isLogin();
     logout();
@@ -65,6 +66,7 @@ function buildGraph() {
         let userId = firebase.auth().currentUser.uid;
         firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
             params_data = snapshot.val();
+            allCoursesJson = arr;
             build_graph_and_delete(params_data, arr);
         });
 
@@ -193,13 +195,33 @@ function createTree() {
 
     htmlVar += '<li><span class="caret">מקבץ</span>' +
     '<ul class="nested">';
-    for (let i = 0; i < allCourses.length; i++) {
-        if(allCourses[i].getCatcgory() == 2){
-            if(doneCourses == null || !doneCourses.includes(allCourses[i].getId()))
-            htmlVar +=    '<li>'  + allCourses[i].getName() + '</li>'
+    if(params_data["list_pro_coures"] != null){
+        for (let i = 0; i < params_data["list_pro_coures"].length; i++) {
+            let mikbaz = params_data["list_pro_coures"][i];
+            htmlVar += '<li><span class="caret">'+ mikbaz + '</span>' + '<ul class="nested">';
+            let listOfCurrentMikbaz = allCoursesJson[mikbaz];
+            let required = "",nonRequired = "";
+            for (let i = 0; i < listOfCurrentMikbaz.length; i++) {
+                let id = listOfCurrentMikbaz[i].id;
+                if(doneCourses == null  || !doneCourses.includes(id)){
+                    if(listOfCurrentMikbaz[i].required == "1")
+                    required +=    '<li>'  + listOfCurrentMikbaz[i].name + '</li>';
+                    else
+                    nonRequired +=    '<li>'  + listOfCurrentMikbaz[i].name + '</li>';
+                }
+                
+            }
+            htmlVar += '<li><span class="caret">'+ 'חובה' + '</span>' + '<ul class="nested">';
+            htmlVar += required;
+            htmlVar += '</ul>' + '</li>';
+            htmlVar += '<li><span class="caret">'+ 'בחירה' + '</span>' + '<ul class="nested">';
+            htmlVar += nonRequired;
+            htmlVar += '</ul>' + '</li>';
+            htmlVar += '</ul>' + '</li>';
         }
-
     }
+   
+    
     htmlVar += '</ul>' + '</li>';
 
     htmlVar += '<li><span class="caret">כללי</span>' +
@@ -215,15 +237,6 @@ function createTree() {
 
     htmlVar += '</ul>' + '</li>' + '</ul>';
     
-    // for (let j = 0; j < allCourses.length; j++) {
-    //     if(allCourses[j].getCatcgory() == 2){
-    //         if(doneCourses == null || !doneCourses.includes(allCourses[j].getId()))
-    //         htmlVar +=    '<li>'  + allCourses[j].getName() + '</li>'
-    //     }
-
-    // }
-    
-
     document.getElementById("genralTree").innerHTML = htmlVar;
     for (let i = 0; i < toggler.length; i++) {
         toggler[i].addEventListener("click", function () {
