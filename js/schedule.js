@@ -57,13 +57,11 @@ function buildGraph() {
                 currentCourses = g.getRelevantCourses();
              
             }
-            setTimeout(() => {
                 let userId = firebase.auth().currentUser.uid;
                 firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
                 let params_data =  snapshot.val();
                 build_graph_and_delete(params_data,arr);
             });
-            }, 1000);
             
         }
    
