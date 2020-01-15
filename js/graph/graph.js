@@ -67,9 +67,14 @@ class Graph {
         for (var i = 0; i < this.VertexList.length; i++) {
             if (this.VertexList[i].getCond() != "") {
                 for (var j = 0; j < this.VertexList.length; j++) {
-                    if (this.arraysEqual(this.VertexList[j].getId(),this.VertexList[i].getCond())) {
-                        g.addEdge(this.VertexList[j], this.VertexList[i]);
+                    let conditions = this.VertexList[i].getCond();
+                    let id = this.VertexList[j].getId();
+                    for (let k = 0; k < conditions.length; k++) {
+                        if (this.VertexList[j].getId() == conditions[k]) {
+                            this.addEdge(this.VertexList[j], this.VertexList[i]);
+                        }
                     }
+                   
 
                 }
             }
@@ -132,6 +137,7 @@ class Graph {
 
         for (var i = 0; i < this.VertexList.length; i++) {
             var inCond = this.VertexList[i].getAdjInList();
+            var outCond = this.VertexList[i].getAdjInList();
             if (inCond.length == 0) {
                 list_ver.push(this.VertexList[i]);
             }
