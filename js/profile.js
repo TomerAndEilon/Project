@@ -28,12 +28,12 @@ function update_to_db_after_click_save() {
         let id_done_list = [];
         let year_number = $('#choose-year-number').selectpicker('val');
         let pro_coures = $('#choose-pro-courses').selectpicker('val');
-        
+        pro_coures = getProCoursesInEnglish(pro_coures);
         let coures_done_list = $('.coures-ids:checkbox:checked')
         for (let i = 0; i < coures_done_list.length; i++) {
             let courseNumber = $(coures_done_list[i]).data("id");
             var numberPattern = /\d+/g;
-            let valid = courseNumber.match( numberPattern )
+            let valid = courseNumber.match(numberPattern)
             id_done_list.push(valid);
         }
         if (userId != null) {
@@ -43,7 +43,36 @@ function update_to_db_after_click_save() {
 
 
 
-    })
+    });
+    function getProCoursesInEnglish(proCourse){
+        let courseInEnglish = [];
+        for (let index = 0; index < proCourse.length; index++) {
+            switch (proCourse[index]) {
+                case "פיתוח תוכנה":
+                    courseInEnglish.push("software");
+                    break;
+                case "אינטרנט":
+                    courseInEnglish.push("Internet technology");
+                    break;
+                case "עיבוד אותות":
+                    courseInEnglish.push("Signal Processing");
+                    break;
+                case "רשתות":
+                    courseInEnglish.push("Real-time systems and networks");
+                    break;
+                case "בינה מלאכותית":
+                    courseInEnglish.push("Computational Learning and Artificial Intelligence");
+                    break;
+                
+                default:
+                    break;
+            }
+            
+        }
+       
+        return courseInEnglish;
+
+    }
 
 
 

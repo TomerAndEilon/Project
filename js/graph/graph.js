@@ -45,6 +45,9 @@ class Vertex {
     getValue() {
         return this.value;
     }
+    getCatcgory() {
+        return this.category;
+    }
 }
 
 /********************************************************************************************************** */
@@ -52,9 +55,11 @@ class Graph {
 
     constructor() {
         this.VertexList = [];
+        this.allCoursesNames = [];
     }
     addVertex(v) {
         this.VertexList.push(v);
+        this.allCoursesNames.push(v.getName());
     }
     addEdge(from, to) {
         var vartexFrom = this.getFromVertexList(from.getId());
@@ -182,6 +187,10 @@ class Graph {
                 return;
             }
         }
+    }
+
+    getAllVertexList(){
+        return this.VertexList;
     }
 
 

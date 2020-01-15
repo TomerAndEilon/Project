@@ -1,112 +1,118 @@
-var url_json_course ="https://tomerandeilon.github.io/Project/tomerJson.json"
+var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json"
 var currentCourses;
 var user_uid_main;
+var params_data;
+var graph;
+var listDoneCorses;
 $(document).ready(function () {
     isLogin();
     logout();
     updateDataToProfile();
-    // buildGraph();
+
 });
 
 function buildGraph() {
-        var g = new Graph();
-        requestURL = url_json_course;
-        var request = new XMLHttpRequest();
-        request.open('GET', requestURL);
-        request.responseType = 'json'; // now we're getting a string!
-        request.send();
+    var g = new Graph();
+    requestURL = url_json_course;
+    var request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'json'; // now we're getting a string!
+    request.send();
 
-        request.onload = function () {
-            const arrText = request.response; 
-            runG(arrText);
-        };
+    request.onload = function () {
+        const arrText = request.response;
+        runG(arrText);
+    };
 
-       
-        function runG(arr) {
-            function build_graph_and_delete(params,arr) {
-                console.log(arr);
-                for(i in arr){
-                    let obj = arr[i]
-                    for (let j = 0; j < obj.length; j++) {
-                        if(params["list_pro_coures"] && params["list_pro_coures"].includes(i)){
-                            g.addVertex(new Vertex(obj[j],2));
-                            console.log(i)
-                        } 
-                         else if(i == 'General courses')
-                         g.addVertex(new Vertex(obj[j],1));
-                         else
-                         g.addVertex(new Vertex(obj[j],3));
+
+    function runG(arr) {
+        function build_graph_and_delete(params, arr) {
+            console.log(arr);
+            for (i in arr) {
+                let obj = arr[i]
+                for (let j = 0; j < obj.length; j++) {
+                    if (params["list_pro_coures"] && params["list_pro_coures"].includes(i)) {
+                        g.addVertex(new Vertex(obj[j], 2));
+
                     }
+                    else if (i == 'General courses')
+                        g.addVertex(new Vertex(obj[j], 1));
+                    else
+                        g.addVertex(new Vertex(obj[j], 3));
                 }
-                const event = new Date();
-                if(params["list_done_coures"]){
-                    for (let i = 0; i < params["list_done_coures"].length; i++) {
-                        var number = params["list_done_coures"][i];
-                        const numberPattern =/\d+/g;
-                        console.log(numberPattern);
-                        console.log(number);
-                        
-                        var valid = String(number).match( numberPattern )
-                        console.log(valid)
-                        g.deleteNode(valid)
-                        
-                    }
-                }
-               
-                g.connectBetweenCourses();
-                currentCourses = g.getRelevantCourses();
-             
             }
-                let userId = firebase.auth().currentUser.uid;
-                firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
-                let params_data =  snapshot.val();
-                build_graph_and_delete(params_data,arr);
-            });
-            
+            const event = new Date();
+            listDoneCorses = params["list_done_coures"];
+            if (params["list_done_coures"]) {
+                for (let i = 0; i < params["list_done_coures"].length; i++) {
+                    var number = params["list_done_coures"][i];
+                    const numberPattern = /\d+/g;
+                    console.log(numberPattern);
+                    console.log(number);
+
+                    var valid = String(number).match(numberPattern)
+                    console.log(valid)
+                    g.deleteNode(valid)
+
+                }
+            }
+
+            g.connectBetweenCourses();
+            currentCourses = g.getRelevantCourses();
+            graph = g;
+
         }
-   
-   
-    
+        let userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
+            params_data = snapshot.val();
+            build_graph_and_delete(params_data, arr);
+        });
+
+    }
+
+
+
 
 }
-function addTheRelavantCourseToHtmlPage(list_vertex,filterNumber) {
-    if(!list_vertex) return;
+function addTheRelavantCourseToHtmlPage(list_vertex, filterNumber) {
+    if (!list_vertex) return;
     $("#table-coures").empty();
     $("#table-coures").append(
-        '<thead " class="thead-dark">'+
-        '<tr>'+
-        '<th scope="col">#</th>'+
-        '<th scope="col">קורסים</th>'+
-        '<th scope="col">נקודות זכות</th>'+
-        '</tr>'+
-        '</thead>'+
+        '<thead " class="thead-dark">' +
+        '<tr>' +
+        '<th scope="col">#</th>' +
+        '<th scope="col">קורסים</th>' +
+        '<th scope="col">נקודות זכות</th>' +
+        '</tr>' +
+        '</thead>' +
         '<tbody id="in-data-table"></tbody>');
-    let lengthDispaly = filterNumber > list_vertex.length?list_vertex.length:filterNumber;
+    let lengthDispaly = filterNumber > list_vertex.length ? list_vertex.length : filterNumber;
     for (let index = 0; index < lengthDispaly; index++) {
-        
+
         $("#in-data-table").append(
-            '<tr>'+
-            '<th scope="row">'+list_vertex[index].getId()+'</th>' +
-            '<td>'+list_vertex[index].getName()+'</td>'+
-            '<td>'+list_vertex[index].getValue()+'</td>'+  
-        ' </tr>'
-        ); 
+            '<tr>' +
+            '<th scope="row">' + list_vertex[index].getId() + '</th>' +
+            '<td>' + list_vertex[index].getName() + '</td>' +
+            '<td>' + list_vertex[index].getValue() + '</td>' +
+            ' </tr>'
+        );
     }
     $("#table-row").css("display", "block");
-    
+
 }
 $("#choose-for-me-btn").on("click", function () {
     let e = document.getElementById("numberOfCourses");
     let strUser = e.options[e.selectedIndex].value;
-    addTheRelavantCourseToHtmlPage(currentCourses,strUser);
+    addTheRelavantCourseToHtmlPage(currentCourses, strUser);
+    createTree();
 });
 
 $("#show-me-all").on("click", function () {
-    addTheRelavantCourseToHtmlPage(currentCourses,currentCourses.length);
+    addTheRelavantCourseToHtmlPage(currentCourses, currentCourses.length);
 });
 
 
-/***************************FireBase Function********************************** */ 
+/***************************FireBase Function********************************** */
 function isLogin() {
     var firebaseConfig = {
         apiKey: "AIzaSyC5TD5bZiZz40XmGIFdjM5nIwga_QBTlBM",
@@ -165,6 +171,68 @@ function updateDataToProfile() {
         }
     }, 1000);
 }
+/************************************************************************** */
+function createTree() {
+    var toggler = document.getElementsByClassName("caret");
+    let allCourses = graph.getAllVertexList();
+    let doneCourses = listDoneCorses;
+    let htmlVar = 
+        '<ul id="myUL">' +
+        '<li><span class="caret">קורסים שנותרו</span>' +
+        '<ul class="nested">' +
+        '<li><span class="caret">חובה</span>' +
+        '<ul class="nested">';
+    for (let i = 0; i < allCourses.length; i++) {
+        if(allCourses[i].getCatcgory() == 1){
+            if(doneCourses == null || !doneCourses.includes(allCourses[i].getId()))
+            htmlVar +=    '<li>'  + allCourses[i].getName() + '</li>'
+        }
+
+    }
+    htmlVar += '</ul>' + '</li>' ;
+
+    htmlVar += '<li><span class="caret">מקבץ</span>' +
+    '<ul class="nested">';
+    for (let i = 0; i < allCourses.length; i++) {
+        if(allCourses[i].getCatcgory() == 2){
+            if(doneCourses == null || !doneCourses.includes(allCourses[i].getId()))
+            htmlVar +=    '<li>'  + allCourses[i].getName() + '</li>'
+        }
+
+    }
+    htmlVar += '</ul>' + '</li>';
+
+    htmlVar += '<li><span class="caret">כללי</span>' +
+    '<ul class="nested">';
+    for (let i = 0; i < allCourses.length; i++) {
+        if(allCourses[i].getCatcgory() == 3){
+            if(doneCourses == null || !doneCourses.includes(allCourses[i].getId()))
+            htmlVar +=    '<li>'  + allCourses[i].getName() + '</li>'
+        }
+
+    }
+    htmlVar += '</ul>' + '</li>';
+
+    htmlVar += '</ul>' + '</li>' + '</ul>';
+    
+    // for (let j = 0; j < allCourses.length; j++) {
+    //     if(allCourses[j].getCatcgory() == 2){
+    //         if(doneCourses == null || !doneCourses.includes(allCourses[j].getId()))
+    //         htmlVar +=    '<li>'  + allCourses[j].getName() + '</li>'
+    //     }
+
+    // }
+    
+
+    document.getElementById("genralTree").innerHTML = htmlVar;
+    for (let i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("caret-down");
+        });
+    }
+}
+
 
 
 
