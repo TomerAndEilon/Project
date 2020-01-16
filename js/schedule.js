@@ -203,7 +203,7 @@ function createTree() {
             let required = "",nonRequired = "";
             for (let i = 0; i < listOfCurrentMikbaz.length; i++) {
                 let id = listOfCurrentMikbaz[i].id;
-                if(doneCourses == null  || !doneCourses.includes(id)){
+                if(doneCourses == null  || !contains(doneCourses,id)){
                     if(listOfCurrentMikbaz[i].required == "1")
                     required +=    '<li>'  + listOfCurrentMikbaz[i].name + '</li>';
                     else
@@ -245,8 +245,27 @@ function createTree() {
         });
     }
 }
+function contains(a, obj) {
+    var i = a.length;
+    while (i--) {
+         let id1 = String(a[i][0]).trim();
+         console.log(Array.isArray(a[0]))
+         let id2 = String(obj).trim();
+       if (arraysEqual(id1,id2)) {
+           return true;
+       }
+    }
+    return false;
+}
 
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    // if (a.length != b.length) return false;
 
-
-
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
 
