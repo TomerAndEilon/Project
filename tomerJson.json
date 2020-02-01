@@ -113,13 +113,6 @@
             "value": "3.5",
             "required": 0,
             "condition": ["0111102","0112104"]
-        },
-        {
-            "id": "0199628",
-            "name": "פרויקט בעיבוד אותות",
-            "value": "3.5",
-            "required": 0,
-            "condition": []
         }
     ],
     "Computational Learning and Artificial Intelligence": [
