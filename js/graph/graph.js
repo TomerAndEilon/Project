@@ -48,6 +48,9 @@ class Vertex {
     getCatcgory() {
         return this.category;
     }
+    setCatcgory(category) {
+        this.category = category;
+    }
 }
 
 /********************************************************************************************************** */
@@ -58,8 +61,14 @@ class Graph {
         this.allCoursesNames = [];
     }
     addVertex(v) {
-        this.VertexList.push(v);
-        this.allCoursesNames.push(v.getName());
+        let oldVertex = this.find(v.getId());
+        if(oldVertex == null){
+            this.VertexList.push(v);
+            this.allCoursesNames.push(v.getName());
+        }
+        else{
+            this.pickOne(v,oldVertex);
+        }
     }
     addEdge(from, to) {
         var vartexFrom = this.getFromVertexList(from.getId());
@@ -67,7 +76,11 @@ class Graph {
         vartexFrom.addToAdjOutList(vartexTo);
         vartexTo.addToAdjInList(vartexFrom);
     }
-
+    pickOne(newVertex,oldVertex){
+        if(newVertex.getCatcgory() < oldVertex.getCatcgory()){
+            oldVertex.setCatcgory(newVertex.getCatcgory());
+        }
+    }
     connectBetweenCourses() {
         for (var i = 0; i < this.VertexList.length; i++) {
             if (this.VertexList[i].getCond() != "") {
@@ -107,7 +120,7 @@ class Graph {
                 return vertex;
             }
         }
-        return "not found " + id
+        return null;
     }
     find_by_name(name) {
         for (const [key, vertex] of Object.entries(this.VertexList)) {
@@ -165,8 +178,8 @@ class Graph {
     arraysEqual(a, b) {
         if (a === b) return true;
         if (a == null || b == null) return false;
-        if (a.length != b.length) return false;
-
+        a = a.toString();
+        b = b.toString();
         for (var i = 0; i < a.length; ++i) {
             if (a[i] !== b[i]) return false;
         }
@@ -184,7 +197,7 @@ class Graph {
                     vertex.deleteInCond(this.VertexList[i]);
                 }
                 this.VertexList.splice(i, 1);
-                return;
+                
             }
         }
     }
