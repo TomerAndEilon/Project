@@ -13,7 +13,7 @@ $(document).ready(function () {
 });
 
 function buildGraph() {
-    var g = new Graph();
+    graph = new Graph();
     requestURL = url_json_course;
     var request = new XMLHttpRequest();
     request.open('GET', requestURL);
@@ -29,17 +29,18 @@ function buildGraph() {
     function runG(arr) {
         function build_graph_and_delete(params, arr) {
             console.log(arr);
+            let courseSet = new Map();
+            let duplicteCourse = new Map();
             for (i in arr) {
                 let obj = arr[i]
                 for (let j = 0; j < obj.length; j++) {
                     if (params["list_pro_coures"] && params["list_pro_coures"].includes(i)) {
-                        g.addVertex(new Vertex(obj[j], 2));
-
+                        graph.addVertex(new Vertex(obj[j], 2));
                     }
                     else if (i == 'General courses')
-                        g.addVertex(new Vertex(obj[j], 1));
+                        graph.addVertex(new Vertex(obj[j], 1));
                     else
-                        g.addVertex(new Vertex(obj[j], 3));
+                        graph.addVertex(new Vertex(obj[j], 3));
                 }
             }
             const event = new Date();
@@ -53,14 +54,14 @@ function buildGraph() {
 
                     var valid = String(number).match(numberPattern)
                     console.log(valid)
-                    g.deleteNode(valid)
+                    graph.deleteNode(valid)
 
                 }
             }
 
-            g.connectBetweenCourses();
-            currentCourses = g.getRelevantCourses();
-            graph = g;
+            graph.connectBetweenCourses();
+            currentCourses = graph.getRelevantCourses();
+            document.getElementById("loader").style.display = "none";
 
         }
         let userId = firebase.auth().currentUser.uid;
@@ -71,11 +72,8 @@ function buildGraph() {
         });
 
     }
-
-
-
-
 }
+/***************************************print to html page function ******************************/
 function addTheRelavantCourseToHtmlPage(list_vertex, filterNumber) {
     if (!list_vertex) return;
     $("#table-coures").empty();
@@ -89,18 +87,125 @@ function addTheRelavantCourseToHtmlPage(list_vertex, filterNumber) {
         '</thead>' +
         '<tbody id="in-data-table"></tbody>');
     let lengthDispaly = filterNumber > list_vertex.length ? list_vertex.length : filterNumber;
+    let duplicate = [];
     for (let index = 0; index < lengthDispaly; index++) {
+        if (!contains(duplicate, list_vertex[index].getId())) {
+            $("#in-data-table").append(
+                '<tr>' +
+                '<th scope="row">' + list_vertex[index].getId() + '</th>' +
+                '<td>' + list_vertex[index].getName() + '</td>' +
+                '<td>' + list_vertex[index].getValue() + '</td>' +
+                ' </tr>'
+            );
 
-        $("#in-data-table").append(
-            '<tr>' +
-            '<th scope="row">' + list_vertex[index].getId() + '</th>' +
-            '<td>' + list_vertex[index].getName() + '</td>' +
-            '<td>' + list_vertex[index].getValue() + '</td>' +
-            ' </tr>'
-        );
+            duplicate.push(list_vertex[index].getId());
+        }
     }
     $("#table-row").css("display", "block");
 
+}
+function createTree() {
+    var toggler = document.getElementsByClassName("caret");
+    let allCourses = graph.getAllVertexList();
+    let doneCourses = listDoneCorses;
+    let duplicateMap = []
+    let htmlVar =
+        '<ul id="myUL">' +
+        '<li><span class="caret">קורסים שנותרו</span>' +
+        '<ul class="nested">' +
+        '<li><span class="caret">חובה</span>' +
+        '<ul class="nested">';
+    for (let i = 0; i < allCourses.length; i++) {
+        if (allCourses[i].getCatcgory() == 1) {
+            if (doneCourses == null || !contains(doneCourses, allCourses[i].getId())) {
+                htmlVar += '<li>' + allCourses[i].getName() + '</li>'
+                duplicateMap.push(allCourses[i].getId());
+            }
+        }
+
+    }
+    htmlVar += '</ul>' + '</li>';
+
+    htmlVar += '<li><span class="caret">מקבץ</span>' +
+        '<ul class="nested">';
+    let required = [];
+    let nonRequired = [];
+    if (params_data["list_pro_coures"] != null) {
+        for (let i = 0; i < params_data["list_pro_coures"].length; i++) {//pass on requred
+            let mikbaz = params_data["list_pro_coures"][i];
+            let toHtml = '<li><span class="caret">' + mikbaz + '</span>' + '<ul class="nested">';
+            let listOfCurrentMikbaz = allCoursesJson[mikbaz];
+            let total = "";
+            for (let i = 0; i < listOfCurrentMikbaz.length; i++) {
+                let id = listOfCurrentMikbaz[i].id;
+                if (doneCourses == null || !contains(doneCourses, id)) {
+                    if (listOfCurrentMikbaz[i].required == "1") {
+                        total += '<li>' + listOfCurrentMikbaz[i].name + '</li>';
+                        duplicateMap.push(listOfCurrentMikbaz[i].id)
+                    }
+                }
+            }
+            toHtml += '<li><span class="caret">' + 'חובה' + '</span>' + '<ul class="nested">';
+            toHtml += total;
+            toHtml += '</ul>' + '</li>';
+            required.push(toHtml);
+        }
+    }
+    if (params_data["list_pro_coures"] != null) {
+        for (let i = 0; i < params_data["list_pro_coures"].length; i++) {//pass on requred
+            let mikbaz = params_data["list_pro_coures"][i];
+            let toHtml = ""
+            let listOfCurrentMikbaz = allCoursesJson[mikbaz];
+            let total = "";
+            for (let i = 0; i < listOfCurrentMikbaz.length; i++) {
+                let id = listOfCurrentMikbaz[i].id;
+                if (doneCourses == null || !contains(doneCourses, id)) {
+                    if (listOfCurrentMikbaz[i].required == "0") {
+                        total += '<li>' + listOfCurrentMikbaz[i].name + '</li>';
+                        duplicateMap.push(listOfCurrentMikbaz[i].id)
+                    }
+                }
+            }
+            toHtml += '<li><span class="caret">' + 'בחירה' + '</span>' + '<ul class="nested">';
+            toHtml += total;
+            toHtml += '</ul>' + '</li>';
+            toHtml += '</ul>' + '</li>';
+
+            nonRequired.push(toHtml);
+        }
+    }
+
+    for (let i = 0; i < required.length; i++) {
+        htmlVar += required[i];
+        htmlVar += nonRequired[i];
+    }
+
+
+    htmlVar += '</ul>' + '</li>';
+    htmlVar += '<li><span class="caret">כללי</span>' +
+        '<ul class="nested">';
+    for (let i = 0; i < allCourses.length; i++) {
+        if (allCourses[i].getCatcgory() == 3) {
+            if (doneCourses == null || !contains(doneCourses, allCourses[i].getId())) {
+                if (!contains(duplicateMap, allCourses[i].getId())) {
+                    htmlVar += '<li>' + allCourses[i].getName() + '</li>'
+                    duplicateMap.push(allCourses[i].getId());
+                }
+            }
+        }
+
+    }
+    htmlVar += '</ul>' + '</li>';
+
+    htmlVar += '</ul>' + '</li>' + '</ul>';
+
+    document.getElementById("genralTree").innerHTML = htmlVar;
+    for (let i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("caret-down");
+        });
+    }
 }
 $("#choose-for-me-btn").on("click", function () {
     let e = document.getElementById("numberOfCourses");
@@ -111,6 +216,11 @@ $("#choose-for-me-btn").on("click", function () {
 
 $("#show-me-all").on("click", function () {
     addTheRelavantCourseToHtmlPage(currentCourses, currentCourses.length);
+});
+$("#upper-me").on("click", function () {
+    let e = document.getElementById("numberOfCourses");
+    let strUser = e.options[e.selectedIndex].value;
+    addTheRelavantCourseToHtmlPage(currentCourses, strUser);
 });
 
 
@@ -173,87 +283,28 @@ function updateDataToProfile() {
         }
     }, 1000);
 }
-/************************************************************************** */
-function createTree() {
-    var toggler = document.getElementsByClassName("caret");
-    let allCourses = graph.getAllVertexList();
-    let doneCourses = listDoneCorses;
-    let htmlVar = 
-        '<ul id="myUL">' +
-        '<li><span class="caret">קורסים שנותרו</span>' +
-        '<ul class="nested">' +
-        '<li><span class="caret">חובה</span>' +
-        '<ul class="nested">';
-    for (let i = 0; i < allCourses.length; i++) {
-        if(allCourses[i].getCatcgory() == 1){
-            if(doneCourses == null || !doneCourses.includes(allCourses[i].getId()))
-            htmlVar +=    '<li>'  + allCourses[i].getName() + '</li>'
-        }
 
-    }
-    htmlVar += '</ul>' + '</li>' ;
-
-    htmlVar += '<li><span class="caret">מקבץ</span>' +
-    '<ul class="nested">';
-    if(params_data["list_pro_coures"] != null){
-        for (let i = 0; i < params_data["list_pro_coures"].length; i++) {
-            let mikbaz = params_data["list_pro_coures"][i];
-            htmlVar += '<li><span class="caret">'+ mikbaz + '</span>' + '<ul class="nested">';
-            let listOfCurrentMikbaz = allCoursesJson[mikbaz];
-            let required = "",nonRequired = "";
-            for (let i = 0; i < listOfCurrentMikbaz.length; i++) {
-                let id = listOfCurrentMikbaz[i].id;
-                if(doneCourses == null  || !contains(doneCourses,id)){
-                    if(listOfCurrentMikbaz[i].required == "1")
-                    required +=    '<li>'  + listOfCurrentMikbaz[i].name + '</li>';
-                    else
-                    nonRequired +=    '<li>'  + listOfCurrentMikbaz[i].name + '</li>';
-                }
-                
-            }
-            htmlVar += '<li><span class="caret">'+ 'חובה' + '</span>' + '<ul class="nested">';
-            htmlVar += required;
-            htmlVar += '</ul>' + '</li>';
-            htmlVar += '<li><span class="caret">'+ 'בחירה' + '</span>' + '<ul class="nested">';
-            htmlVar += nonRequired;
-            htmlVar += '</ul>' + '</li>';
-            htmlVar += '</ul>' + '</li>';
-        }
-    }
-   
-    
-    htmlVar += '</ul>' + '</li>';
-
-    htmlVar += '<li><span class="caret">כללי</span>' +
-    '<ul class="nested">';
-    for (let i = 0; i < allCourses.length; i++) {
-        if(allCourses[i].getCatcgory() == 3){
-            if(doneCourses == null || !doneCourses.includes(allCourses[i].getId()))
-            htmlVar +=    '<li>'  + allCourses[i].getName() + '</li>'
-        }
-
-    }
-    htmlVar += '</ul>' + '</li>';
-
-    htmlVar += '</ul>' + '</li>' + '</ul>';
-    
-    document.getElementById("genralTree").innerHTML = htmlVar;
-    for (let i = 0; i < toggler.length; i++) {
-        toggler[i].addEventListener("click", function () {
-            this.parentElement.querySelector(".nested").classList.toggle("active");
-            this.classList.toggle("caret-down");
-        });
-    }
-}
+/********************************equal function******************************************** */
 function contains(a, obj) {
     var i = a.length;
     while (i--) {
-         let id1 = String(a[i][0]).trim();
-         console.log(Array.isArray(a[0]))
-         let id2 = String(obj).trim();
-       if (arraysEqual(id1,id2)) {
-           return true;
-       }
+        let id1 = String(a[i]).trim();
+        let id2 = String(obj).trim();
+        if (arraysEqual(id1, id2)) {
+            return true;
+        }
+    }
+    return false;
+}
+function containsCourse(a, obj) {
+    var i = a.length;
+    while (i--) {
+        let id1 = String(a[i]).trim();
+        console.log(Array.isArray(a[0]))
+        let id2 = String(obj).trim();
+        if (arraysEqual(id1, id2)) {
+            return true;
+        }
     }
     return false;
 }
@@ -262,8 +313,8 @@ function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
     // if (a.length != b.length) return false;
-
-    for (var i = 0; i < a.length; ++i) {
+    let len = a.length < b.length ? a.length : b.length;
+    for (var i = 0; i < len; ++i) {
         if (a[i] !== b[i]) return false;
     }
     return true;
