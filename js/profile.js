@@ -211,7 +211,7 @@ function make_html_builds() {
 
 
     }
-    var url_json_course = "https://tomerandeilon.github.io/Project/courses.json";
+    var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json";
 
     requestURL = url_json_course;
     var request = new XMLHttpRequest();
