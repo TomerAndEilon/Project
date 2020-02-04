@@ -243,6 +243,20 @@
             "value": "3.5",
             "required": 0,
             "condition": []
+        },
+        {
+            "id": "0122423",
+            "name": "עקרונות שפות תכנות",
+            "value": "3.5",
+            "required": 1,
+            "condition": []
+        },
+        {
+            "id": "0132402",
+            "name": "מבנה קומפיילרים",
+            "value": "3.5",
+            "required": 1,
+            "condition": []
         }
     ],
     "Internet technology": [
@@ -307,6 +321,20 @@
             "name": "מבוא לקריפטולוגיה",
             "value": "3.5",
             "required": 0,
+            "condition": []
+        },
+        {
+            "id": "0122423",
+            "name": "עקרונות שפות תכנות",
+            "value": "3.5",
+            "required": 1,
+            "condition": []
+        },
+        {
+            "id": "0132402",
+            "name": "מבנה קומפיילרים",
+            "value": "3.5",
+            "required": 1,
             "condition": []
         }
     ],
