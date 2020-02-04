@@ -28,9 +28,6 @@ function buildGraph() {
 
     function runG(arr) {
         function build_graph_and_delete(params, arr) {
-            console.log(arr);
-            let courseSet = new Map();
-            let duplicteCourse = new Map();
             for (i in arr) {
                 let obj = arr[i]
                 for (let j = 0; j < obj.length; j++) {
@@ -43,24 +40,18 @@ function buildGraph() {
                         graph.addVertex(new Vertex(obj[j], 3));
                 }
             }
-            const event = new Date();
             listDoneCorses = params["list_done_coures"];
+            graph.connectBetweenCoursesBfs();
             if (params["list_done_coures"]) {
                 for (let i = 0; i < params["list_done_coures"].length; i++) {
                     var number = params["list_done_coures"][i];
                     const numberPattern = /\d+/g;
-                    console.log(numberPattern);
-                    console.log(number);
-
                     var valid = String(number).match(numberPattern)
-                    console.log(valid)
-                    graph.deleteNode(valid)
-
+                    graph.deleteNodeBfs(valid)
                 }
             }
-
-            graph.connectBetweenCourses();
-            currentCourses = graph.getRelevantCourses();
+            graph.bfs();
+            currentCourses = graph.getRelevantCoursesBfs();
             document.getElementById("loader").style.display = "none";
 
         }
