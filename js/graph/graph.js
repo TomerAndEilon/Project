@@ -1,17 +1,24 @@
 class Vertex {
     constructor(details, category) {
-        this.details = details;
-        this.name = details.name;
-        let prevId = details.id
-        var numberPattern = /\d+/g;
-        let validId = prevId.match(numberPattern)
-        this.id = validId;
-        console.log(this.id)
-        this.value = details.value
-        this.condition = details.condition;
+        if (details) {
+            this.details = details;
+            this.name = details.name;
+            let prevId = details.id
+            var numberPattern = /\d+/g;
+            let validId = prevId.match(numberPattern)
+            this.id = validId;
+            console.log(this.id)
+            this.value = details.value
+            this.condition = details.condition;
+            this.visitedCounter = 0;
+            this.visited = false;
+            this.done = false;
+
+        }
         this.AdjInList = [];
         this.AdjOutList = [];
-        this.category = category;
+        if (category)
+            this.category = category;
     }
     addToAdjOutList(v) {
         this.AdjOutList.push(v);
@@ -51,6 +58,21 @@ class Vertex {
     setCatcgory(category) {
         this.category = category;
     }
+    getVisited() {
+        return this.visited;
+    }
+    setVisited() {
+        this.visited = true;
+    }
+    entry() {
+        this.visitedCounter = this.visitedCounter + 1;
+    }
+    getDone() {
+        return this.done;
+    }
+    setDone(flag) {
+        this.done = flag;
+    }
 }
 
 /********************************************************************************************************** */
@@ -59,15 +81,16 @@ class Graph {
     constructor() {
         this.VertexList = [];
         this.allCoursesNames = [];
+        this.start = new Vertex();
     }
     addVertex(v) {
         let oldVertex = this.find(v.getId());
-        if(oldVertex == null){
+        if (oldVertex == null) {
             this.VertexList.push(v);
             this.allCoursesNames.push(v.getName());
         }
-        else{
-            this.pickOne(v,oldVertex);
+        else {
+            this.pickOne(v, oldVertex);
         }
     }
     addEdge(from, to) {
@@ -76,12 +99,17 @@ class Graph {
         vartexFrom.addToAdjOutList(vartexTo);
         vartexTo.addToAdjInList(vartexFrom);
     }
-    pickOne(newVertex,oldVertex){
-        if(newVertex.getCatcgory() < oldVertex.getCatcgory()){
+    addEdgeBfs(from, to) {
+        from.addToAdjOutList(to);
+        to.addToAdjInList(from);
+    }
+    pickOne(newVertex, oldVertex) {
+        if (newVertex.getCatcgory() < oldVertex.getCatcgory()) {
             oldVertex.setCatcgory(newVertex.getCatcgory());
         }
     }
-    connectBetweenCourses() {
+ 
+    connectBetweenCoursesBfs() {
         for (var i = 0; i < this.VertexList.length; i++) {
             if (this.VertexList[i].getCond() != "") {
                 for (var j = 0; j < this.VertexList.length; j++) {
@@ -89,34 +117,23 @@ class Graph {
                     let id = this.VertexList[j].getId();
                     for (let k = 0; k < conditions.length; k++) {
                         if (this.VertexList[j].getId() == conditions[k]) {
-                            this.addEdge(this.VertexList[j], this.VertexList[i]);
+                            this.addEdgeBfs(this.VertexList[j], this.VertexList[i]);
                         }
                     }
-                   
+
 
                 }
             }
-        }
-    }
-    connectBetweenCourseslist() {
-        for (var i = 0; i < this.VertexList.length; i++) {
-            if ((Array.isArray(this.VertexList[i].getCond()) && this.VertexList[i].getCond().length)) {
-                for (const [key, condobj] of Object.entries(this.VertexList[i].getCond())) {
-
-                    for (var j = 0; j < this.VertexList.length; j++) {
-                        if (this.arraysEqual(this.VertexList[j].getId(),condobj)) {
-                            this.addEdge(this.VertexList[j], this.VertexList[i]);
-                        }
-
-                    }
-                }
+            else {
+                this.addEdgeBfs(this.start, this.VertexList[i]);
 
             }
         }
     }
+  
     find(id) {
         for (const [key, vertex] of Object.entries(this.VertexList)) {
-            if (this.arraysEqual(vertex.getId(),id)) {
+            if (this.arraysEqual(vertex.getId(), id)) {
                 return vertex;
             }
         }
@@ -124,40 +141,20 @@ class Graph {
     }
     find_by_name(name) {
         for (const [key, vertex] of Object.entries(this.VertexList)) {
-            if (this.arraysEqual(vertex.getName(),name)) {
+            if (this.arraysEqual(vertex.getName(), name)) {
                 return vertex;
             }
         }
         return "not found " + name
     }
-    printGraph() {
-        for (var i = 0; i < this.VertexList.length; i++) {
-            var out = this.VertexList[i].getAdjOutList();
-            var conc = "";
-            for (var j = 0; j < out.length; j++)
-                conc += out[j].getName() + " ";
-
-            console.log("course:" + this.VertexList[i].getName() + " -> " + "in:" + conc);
-        }
-    }
-
-    printRelevantCourses() {
-        console.log('relvant courses')
-        for (var i = 0; i < this.VertexList.length; i++) {
-            var inCond = this.VertexList[i].getAdjInList();
-            if (inCond.length == 0)
-                console.log(this.VertexList[i].name + "  ");
-        }
-    }
-    getRelevantCourses() {
+    
+    getRelevantCoursesBfs() {
 
         var list_ver = new Array()
 
-        for (var i = 0; i < this.VertexList.length; i++) {
-            var inCond = this.VertexList[i].getAdjInList();
-            var outCond = this.VertexList[i].getAdjInList();
-            if (inCond.length == 0) {
-                list_ver.push(this.VertexList[i]);
+        for (let j = 0; j < this.VertexList.length; j++) {
+            if(this.VertexList[j].visitedCounter == this.VertexList[j].getAdjInList().length && this.VertexList[j].getDone() == false){
+                list_ver.push(this.VertexList[j]);
             }
         }
         list_ver.sort(function (a, b) {
@@ -170,7 +167,7 @@ class Graph {
 
     getFromVertexList(id) {
         for (var i = 0; i < this.VertexList.length; i++) {
-            if (this.arraysEqual(this.VertexList[i].getId(),id))
+            if (this.arraysEqual(this.VertexList[i].getId(), id))
                 return this.VertexList[i];
         }
     }
@@ -186,30 +183,75 @@ class Graph {
         return true;
     }
 
-    deleteNode(nodeId) {
+    deleteNodeBfs(nodeId) {
         for (var i = 0; i < this.VertexList.length; i++) {
             if (this.arraysEqual(this.VertexList[i].getId(), nodeId) == true) {
-                console.log("delete")
-                console.log(this.VertexList[i].getName())
-                var out = this.VertexList[i].getAdjOutList();
-                for (var j = 0; j < out.length; j++) {
-                    var vertex = this.getFromVertexList(out[j].getId());
-                    vertex.deleteInCond(this.VertexList[i]);
-                }
-                this.VertexList.splice(i, 1);
-                
+                this.VertexList[i].setDone(true);
             }
         }
     }
 
-    getAllVertexList(){
+    getAllVertexList() {
         return this.VertexList;
     }
 
+    bfs() {
+        // Create an object for queue 
+        var q = new Queue();
+        // add the starting node to the queue 
+        q.enqueue(this.start);
 
+        // loop until queue is element 
+        while (!q.isEmpty()) {
+            // get the element from the queue 
+            var getQueueElement = q.dequeue();
+
+            // passing the current vertex to callback funtion 
+            // getQueueElement.visited();
+            // get the adjacent list for current vertex 
+            var get_List = getQueueElement.getAdjOutList();
+
+            // loop through the list and add the element to the 
+            // queue if it is not processed yet 
+            for (var i in get_List) {
+                var neigh = get_List[i];
+                neigh.entry();
+                if(neigh.getVisited() == false)
+                if (neigh.getDone() == true) {
+                    neigh.setVisited(true);
+                    q.enqueue(neigh);
+                }
+            }
+        }
+    }
 
     // bfs(v) 
     // dfs(v) 
+}
+
+class Queue {
+    // Array is used to implement a Queue 
+    constructor() {
+        this.items = [];
+    }
+
+    // Functions to be implemented 
+    enqueue(element) {
+        // adding element to the queue 
+        this.items.push(element);
+    }     // dequeue() 
+    dequeue() {
+        // removing element from the queue 
+        // returns underflow when called  
+        // on empty queue 
+        if (this.isEmpty())
+            return "Underflow";
+        return this.items.shift();
+    }
+    isEmpty() {
+        // return true if the queue is empty. 
+        return this.items.length == 0;
+    }     // printQueue() 
 }
 
 // var g = new Graph();
