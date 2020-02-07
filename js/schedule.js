@@ -5,6 +5,8 @@ var params_data;
 var graph;
 var listDoneCorses;
 var allCoursesJson;
+var checkedCourse = [];
+var checkedCourseNames = [];
 $(document).ready(function () {
     isLogin();
     logout();
@@ -64,6 +66,29 @@ function buildGraph() {
 
     }
 }
+function add(course){
+    if(course.checked) {
+        let allCourses = graph.getAllVertexList();
+        this.checkedCourse.push(course.id);
+     }else{
+        for (let i = 0; i < this.checkedCourse.length; i++) {
+            if(this.arraysEqual(course.id,this.checkedCourse[i])){
+                this.checkedCourse.splice(i, 1);
+                break;
+            }
+        }
+     }
+}
+function markTheSelcetCourse(){
+    for (let i = 0; i < this.checkedCourse.length; i++) {
+        let course = document.getElementById(this.checkedCourse[i]);
+        if(course){
+            course.checked = true;
+        }
+
+        
+    }
+}
 /***************************************print to html page function ******************************/
 function addTheRelavantCourseToHtmlPage(list_vertex, filterNumber) {
     if (!list_vertex) return;
@@ -71,7 +96,8 @@ function addTheRelavantCourseToHtmlPage(list_vertex, filterNumber) {
     $("#table-coures").append(
         '<thead " class="thead-dark">' +
         '<tr>' +
-        '<th scope="col">#</th>' +
+        '<th scope="col"></th>' +
+        '<th scope="col">מזהה קורס</th>' +
         '<th scope="col">קורסים</th>' +
         '<th scope="col">נקודות זכות</th>' +
         '</tr>' +
@@ -83,6 +109,7 @@ function addTheRelavantCourseToHtmlPage(list_vertex, filterNumber) {
         if (!contains(duplicate, list_vertex[index].getId())) {
             $("#in-data-table").append(
                 '<tr>' +
+                '<th><input ‫ class="checkthis" type="checkbox" id = ' + list_vertex[index].getId() + ' onchange=add(this) ></th>' +
                 '<th scope="row">' + list_vertex[index].getId() + '</th>' +
                 '<td>' + list_vertex[index].getName() + '</td>' +
                 '<td>' + list_vertex[index].getValue() + '</td>' +
@@ -92,6 +119,7 @@ function addTheRelavantCourseToHtmlPage(list_vertex, filterNumber) {
             duplicate.push(list_vertex[index].getId());
         }
     }
+    this.markTheSelcetCourse();
     $("#table-row").css("display", "block");
 
 }
@@ -203,6 +231,8 @@ $("#choose-for-me-btn").on("click", function () {
     let strUser = e.options[e.selectedIndex].value;
     addTheRelavantCourseToHtmlPage(currentCourses, strUser);
     createTree();
+    document.getElementById("save-button").style.display = "block";
+
 });
 
 $("#show-me-all").on("click", function () {
@@ -211,8 +241,13 @@ $("#show-me-all").on("click", function () {
 $("#upper-me").on("click", function () {
     let e = document.getElementById("numberOfCourses");
     let strUser = e.options[e.selectedIndex].value;
-    addTheRelavantCourseToHtmlPage(currentCourses, strUser);
+    addTheRelavantCourseToHtmlPage(currentCourses, strUser);    
 });
+$("#save-button").on("click", function () {
+    writeUserData();  
+});
+
+
 
 
 /***************************FireBase Function********************************** */
@@ -309,5 +344,20 @@ function arraysEqual(a, b) {
         if (a[i] !== b[i]) return false;
     }
     return true;
+}
+
+/************************write select course to db ********************/
+function writeUserData() {
+    let userId = firebase.auth().currentUser.uid;
+    let e = document.getElementById("semster");
+    let semster = e.options[e.selectedIndex].value == "א"?"first":"second";
+    this.checkedCourseNames = [];
+    for (let i = 0; i < this.checkedCourse.length; i++) {
+        this.checkedCourseNames.push(this.graph.find(this.checkedCourse[i]).getName());
+    }
+    firebase.database().ref('users/' + userId + '/list_select_course/'+semster).set(this.checkedCourseNames);
+    alert("הנתונים נשמרו בהצלחה,ניתן לראות אותם בפרופיל האישי")
+
+    
 }
 

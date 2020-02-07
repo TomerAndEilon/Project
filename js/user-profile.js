@@ -21,6 +21,39 @@ function update_user_name_and_email_to_info(){
     },1000);
     
 }
+function update_checked_courses(){
+    var userId = firebase.auth().currentUser.uid;
+    firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
+        let params_data = snapshot.val();
+        let firstSemster = params_data.list_select_course.first;
+        let secondSemster = params_data.list_select_course.second;
+        setTimeout(() => {
+            
+            updateTree(firstSemster,secondSemster);
+        }, 1000);
+    });
+    
+}
+
+function updateTree(firstSemster,secondSemster){
+    var toggler = document.getElementsByClassName("caret");
+    var i;
+    let firstSemsterElemnet = document.getElementById("semeter0");
+    let secondSemsterElemnet = document.getElementById("semeter1");
+    for (let j = 0; firstSemster && j < firstSemster.length; j++) {
+        firstSemsterElemnet.innerHTML += '<li>' + firstSemster[j] + '</li>';
+    }
+    for (let k = 0; secondSemster && k < secondSemster.length; k++) {
+        secondSemsterElemnet.innerHTML += '<li>' + secondSemster[k] + '</li>';
+    }
+    
+    for (i = 0; i < toggler.length; i++) {
+      toggler[i].addEventListener("click", function() {
+        this.parentElement.querySelector(".nested").classList.toggle("active");
+        this.classList.toggle("caret-down");
+      });
+    }       
+}
 
 
 
@@ -68,6 +101,7 @@ function is_login() {
             add_user_name_on_nav(user);
             $("#logout-btn").css("display", "block");
             $("#login-btn").css("display", "none");
+            update_checked_courses();
             
         } else {
             $("#hello-user").css("display","none");
