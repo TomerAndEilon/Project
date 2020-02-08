@@ -116,7 +116,7 @@ class Graph {
                     let conditions = this.VertexList[i].getCond();
                     let id = this.VertexList[j].getId();
                     for (let k = 0; k < conditions.length; k++) {
-                        if (this.VertexList[j].getId() == conditions[k]) {
+                        if (this.arraysEqual(this.VertexList[j].getId(),conditions[k])) {
                             this.addEdgeBfs(this.VertexList[j], this.VertexList[i]);
                         }
                     }
