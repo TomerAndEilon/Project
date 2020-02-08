@@ -177,7 +177,7 @@
             "name": "עיבוד אותות,קול ותמונה",
             "value": "3.5",
             "required": 0,
-            "condition": []
+            "condition": ["0199419‬"]
         }
     ],
     "Real-time systems and networks": [
@@ -228,7 +228,7 @@
             "name": "עיבוד ספרתי של אותות בזמן אמת",
             "value": "3.5",
             "required": 0,
-            "condition": []
+            "condition": ["0199419‬"]
         },
         {
             "id": "0131301",
