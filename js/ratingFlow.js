@@ -31,14 +31,26 @@ function getAnswerFromDom(){
             }
         }
     }
+    let textAreaValue = $('#textArea').val();
+    map.set(numberOfQuestion+1 ,textAreaValue)
 }
 
 function updateToDB(){
     let userId = firebase.auth().currentUser.uid;
+
+    // firebase.database().ref('users/' + userId + '/rating/' + idCourse + "/freeAnswer").set({
+    //     text: map.get(4),
+    //     checked: 0
+    // }, function(error) {
+    // });
     firebase.database().ref('users/' + userId + '/rating/' + idCourse).set({
         q1: map.get(1),
         q2: map.get(2),
-        q3: map.get(3)
+        q3: map.get(3),
+        freeAnswer: {
+            text: map.get(4),
+            checked: 0
+        }
     }, function(error) {
         if (error) {
           // The write failed...
