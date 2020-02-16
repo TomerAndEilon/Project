@@ -1,4 +1,5 @@
 var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json"
+var url_json_sort_by_semster = "https://tomerandeilon.github.io/Project/sort_by_semster.json"
 var currentCourses;
 var user_uid_main;
 var params_data;
@@ -7,10 +8,12 @@ var listDoneCorses;
 var allCoursesJson;
 var checkedCourse = [];
 var checkedCourseNames = [];
+var coursesBySemster;
 $(document).ready(function () {
     isLogin();
     logout();
     updateDataToProfile();
+    getSortedCoursesBySemster();
 
 });
 
@@ -66,27 +69,27 @@ function buildGraph() {
 
     }
 }
-function add(course){
-    if(course.checked) {
+function add(course) {
+    if (course.checked) {
         let allCourses = graph.getAllVertexList();
         this.checkedCourse.push(course.id);
-     }else{
+    } else {
         for (let i = 0; i < this.checkedCourse.length; i++) {
-            if(this.arraysEqual(course.id,this.checkedCourse[i])){
+            if (this.arraysEqual(course.id, this.checkedCourse[i])) {
                 this.checkedCourse.splice(i, 1);
                 break;
             }
         }
-     }
+    }
 }
-function markTheSelcetCourse(){
+function markTheSelcetCourse() {
     for (let i = 0; i < this.checkedCourse.length; i++) {
         let course = document.getElementById(this.checkedCourse[i]);
-        if(course){
+        if (course) {
             course.checked = true;
         }
 
-        
+
     }
 }
 /***************************************print to html page function ******************************/
@@ -229,26 +232,59 @@ function createTree() {
 $("#choose-for-me-btn").on("click", function () {
     let e = document.getElementById("numberOfCourses");
     let strUser = e.options[e.selectedIndex].value;
-    addTheRelavantCourseToHtmlPage(currentCourses, strUser);
+    let sortBySemster = deleteCourseThatNotRelaventToThisSemster(currentCourses);
+    addTheRelavantCourseToHtmlPage(sortBySemster, strUser);
     createTree();
     document.getElementById("save-button").style.display = "block";
 
 });
 
 $("#show-me-all").on("click", function () {
-    addTheRelavantCourseToHtmlPage(currentCourses, currentCourses.length);
+    let sortBySemster = deleteCourseThatNotRelaventToThisSemster(currentCourses);
+    addTheRelavantCourseToHtmlPage(sortBySemster, sortBySemster.length);
 });
 $("#upper-me").on("click", function () {
     let e = document.getElementById("numberOfCourses");
     let strUser = e.options[e.selectedIndex].value;
-    addTheRelavantCourseToHtmlPage(currentCourses, strUser);    
+    let sortBySemster = deleteCourseThatNotRelaventToThisSemster(currentCourses);
+    addTheRelavantCourseToHtmlPage(sortBySemster, strUser);
 });
 $("#save-button").on("click", function () {
-    writeUserData();  
+    writeUserData();
 });
 
 
+function deleteCourseThatNotRelaventToThisSemster(listCourse) {
+    let e = document.getElementById("semster");
+    let otherSemster = e.options[e.selectedIndex].value == "א" ? "SpringSemster" : "WinterSemster";
+    //check if some of the courses exist in the other semster
+    let listOfCoursesInAntoherSemster = coursesBySemster[otherSemster];
+    let sortedList = [];
+    for (let i = 0; i < listCourse.length; i++) {//for all course check if exist in another semster
+        let contains = false;
+        for (let j = 0; j < listOfCoursesInAntoherSemster.length; j++) {
+            let id1 = String(listCourse[i].id).trim();
+            let id2 = String(listOfCoursesInAntoherSemster[j].id).trim();
+            if (arraysEqual(id1, id2))
+                contains = true;
+        }
+        if (!contains)
+            sortedList.push(listCourse[i]);
+    }
+    return sortedList;
+}
+function getSortedCoursesBySemster() {
+    requestURL = url_json_sort_by_semster;
+    var request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'json'; // now we're getting a string!
+    request.send();
 
+    request.onload = function () {
+        coursesBySemster = request.response;
+
+    };
+}
 
 /***************************FireBase Function********************************** */
 function isLogin() {
@@ -350,14 +386,14 @@ function arraysEqual(a, b) {
 function writeUserData() {
     let userId = firebase.auth().currentUser.uid;
     let e = document.getElementById("semster");
-    let semster = e.options[e.selectedIndex].value == "א"?"first":"second";
+    let semster = e.options[e.selectedIndex].value == "א" ? "first" : "second";
     this.checkedCourseNames = [];
     for (let i = 0; i < this.checkedCourse.length; i++) {
         this.checkedCourseNames.push(this.graph.find(this.checkedCourse[i]).getName());
     }
-    firebase.database().ref('users/' + userId + '/list_select_course/'+semster).set(this.checkedCourseNames);
+    firebase.database().ref('users/' + userId + '/list_select_course/' + semster).set(this.checkedCourseNames);
     alert("הנתונים נשמרו בהצלחה,ניתן לראות אותם בפרופיל האישי")
 
-    
+
 }
 
