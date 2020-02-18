@@ -7,7 +7,6 @@ class Vertex {
             var numberPattern = /\d+/g;
             let validId = prevId.match(numberPattern)
             this.id = validId;
-            console.log(this.id)
             this.value = details.value
             this.condition = details.condition;
             this.visitedCounter = 0;
