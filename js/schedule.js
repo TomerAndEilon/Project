@@ -182,7 +182,7 @@ function createTree() {
             for (let i = 0; i < listOfCurrentMikbaz.length; i++) {
                 let id = listOfCurrentMikbaz[i].id;
                 if (doneCourses == null || !contains(doneCourses, id)) {
-                    if (listOfCurrentMikbaz[i].required == "0") {
+                    if (listOfCurrentMikbaz[i].required == "0" && !contains(duplicateMap,id)) {
                         total += '<li>' + listOfCurrentMikbaz[i].name + '</li>';
                         duplicateMap.push(listOfCurrentMikbaz[i].id)
                     }
