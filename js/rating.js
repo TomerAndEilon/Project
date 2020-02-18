@@ -111,7 +111,7 @@ function getDoneCourses() {
 function writeDoneCourseToHtml(params_data) {
     let listCourse = "";
     let doneCourses = params_data["list_done_coures"];
-    for (let i = 0; i < doneCourses.length; i++) {
+    for (let i = 0; doneCourses && i < doneCourses.length; i++) {
         if (!isRated(doneCourses[i]))
             listCourse += "<li><a class=checkBox href=# onclick='javascript:moveToFlow(id);' id=" + doneCourses[i] + ">" + getCourseName(doneCourses[i]) + "</a></li>";
 

@@ -39,7 +39,7 @@ function buildGraph() {
                     if (params["list_pro_coures"] && params["list_pro_coures"].includes(i)) {
                         graph.addVertex(new Vertex(obj[j], 2));
                     }
-                    else if (i == 'General courses')
+                    else if (i == 'Required')
                         graph.addVertex(new Vertex(obj[j], 1));
                     else
                         graph.addVertex(new Vertex(obj[j], 3));
