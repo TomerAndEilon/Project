@@ -4,7 +4,7 @@ var currentCourses;
 var user_uid_main;
 var params_data;
 var graph;
-var listDoneCorses;
+var listDoneCourses;
 var allCoursesJson;
 var checkedCourse = [];
 var checkedCourseNames = [];
@@ -45,7 +45,7 @@ function buildGraph() {
                         graph.addVertex(new Vertex(obj[j], 3));
                 }
             }
-            listDoneCorses = params["list_done_coures"];
+            listDoneCourses = params["list_done_coures"];
             graph.connectBetweenCoursesBfs();
             if (params["list_done_coures"]) {
                 for (let i = 0; i < params["list_done_coures"].length; i++) {
@@ -129,7 +129,7 @@ function addTheRelavantCourseToHtmlPage(list_vertex, filterNumber) {
 function createTree() {
     var toggler = document.getElementsByClassName("caret");
     let allCourses = graph.getAllVertexList();
-    let doneCourses = listDoneCorses;
+    let doneCourses = listDoneCourses;
     let duplicateMap = []
     let htmlVar =
         '<ul id="myUL">' +

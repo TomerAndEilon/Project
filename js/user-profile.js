@@ -1,4 +1,6 @@
 
+var year;
+var extend;
 $(document).ready(function() {
     console.log( "ready!" );
     //check if loging?
@@ -6,8 +8,6 @@ $(document).ready(function() {
     // add lisaner to the logout button
     logout();
     //add user name to the top
-   
-    update_user_name_and_email_to_info();
    
     
 });
@@ -17,22 +17,92 @@ function update_user_name_and_email_to_info(){
     var user = firebase.auth().currentUser;
         $("#profile-user-name").html("שם: "+ user.displayName);
         $("#profile-user-email").html("מייל: "+ user.email);
+        $("#year").html("שנה בתואר: "+ convertYearNumberToHebrow(year));
+        $("#extend").html("מקבץ: "+ convertProCoursesToHebrow(extend));
     
     },1000);
     
+}
+
+function convertYearNumberToHebrow(year){
+    let yearInHebrow = "";
+    switch (year) {
+        case "1":
+            yearInHebrow = "ראשונה";
+            break;
+        case "2":
+            yearInHebrow = "שנייה";
+            break;
+        case "3":
+            yearInHebrow = "שלישית";
+            break;
+        case "4":
+            yearInHebrow = "רביעית";
+            break;
+        case "5":
+            yearInHebrow = "חמישית";
+            break;
+        case "6":
+            yearInHebrow = "שישית";
+            break;
+        case "7":
+            yearInHebrow = "שביעית";
+            break;
+    
+        default:
+            break;
+    }
+    return yearInHebrow;
+}
+
+function convertProCoursesToHebrow(proList){
+    let courseInHebrow = "";
+    for (let i = 0; proList && i < proList.length; i++) {
+        switch (proList[i]) {
+            case "software":
+                courseInHebrow +="פיתוח תוכנה "
+                break;
+            case "Internet technology":
+                courseInHebrow +="אינטרנט "
+                break;
+            case "Signal Processing":
+                courseInHebrow +="עיבוד אותות "
+                break;
+            case "Real-time systems and networks":
+                courseInHebrow +="רשתות "
+                break;
+            case "Computational Learning and Artificial Intelligence":
+                courseInHebrow +="בינה מלאכותית "
+                break;
+            
+            default:
+                break;
+        }
+        
+    }
+    return courseInHebrow == ""?"*לא נבחר מקבץ*":courseInHebrow;
 }
 function update_checked_courses(){
     var userId = firebase.auth().currentUser.uid;
     firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
         let params_data = snapshot.val();
-        let firstSemster = params_data.list_select_course.first;
-        let secondSemster = params_data.list_select_course.second;
+        let firstSemster = params_data.list_select_course !=null ? params_data.list_select_course.first: "";
+        let secondSemster = params_data.list_select_course !=null ? params_data.list_select_coursese.second: "";
+        year = checkIfEmpty(params_data.year);
+        extend = checkIfEmpty(params_data.list_pro_coures);
+        console.log(year);
+        update_user_name_and_email_to_info();
         setTimeout(() => {
-            
             updateTree(firstSemster,secondSemster);
         }, 1000);
     });
     
+}
+
+function checkIfEmpty(obj){
+    if(obj == null)
+        obj = "";
+    return obj;
 }
 
 function updateTree(firstSemster,secondSemster){
@@ -97,11 +167,11 @@ function is_login() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             userNow2 = user
+            update_checked_courses();
             console.log(user);
             add_user_name_on_nav(user);
             $("#logout-btn").css("display", "block");
             $("#login-btn").css("display", "none");
-            update_checked_courses();
             
         } else {
             $("#hello-user").css("display","none");

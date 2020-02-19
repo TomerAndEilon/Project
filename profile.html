@@ -60,14 +60,21 @@
             <a id="logout-btn" class="nav-link" href="#"
               style="font-weight: bold;color: red;border-radius:14px;display: none;">יציאה</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="index.html">דף הבית
               <span class="sr-only">(current)</span>
             </a>
           </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="user-profile.html">פרופיל אישי
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
           <li class="nav-item">
-
             <a class="nav-link" href="schedule.html">המערכת שלי</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="rating.html">דירוג קורסים</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">ויקי-קורס</a>
@@ -103,25 +110,27 @@
   </header>
 
   <!-- Page Content -->
+  <div id="loader"></div>
 
   <div class="container">
-
+    
     <div class="row">
 
       <div class="col-md-6 mb-5">
-        <h2>איזה שנה אתה בתואר?</h2>
+        <h2>שנה בתואר</h2>
         <hr>
         <select id="choose-year-number" class="selectpicker" data-hide-disabled="true" data-live-search="true"
           data-size="4">
-          <option selected>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option >4</option>
+          <option selected>Nothing selected</option>
+          <option id="one">1</option>
+          <option id="two">2</option>
+          <option id="three">3</option>
+          <option id="four">4</option>
           
         </select>
       </div>
       <div class="col-md-6 mb-5">
-        <h2>איזה מקבץ מגמה?</h2>
+        <h2>מקבץ</h2>
         <hr>
         <select id="choose-pro-courses" class="selectpicker" data-hide-disabled="true" data-live-search="true"
           data-size="5" multiple>

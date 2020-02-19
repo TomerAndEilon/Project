@@ -1,18 +1,19 @@
+var ratingCoursesList = [];
+var listDoneCourses;
+var year;
+var proCourses;
 $(document).ready(function () {
     is_login();
     readPdf();
     search_table();
-    make_html_builds();
     chenge_progress();
     update_data_to_profile();
     logout();
     update_to_db_after_click_save();
-
-
-
-
-
 });
+
+
+
 
 function update_to_db_after_click_save() {
 
@@ -20,7 +21,8 @@ function update_to_db_after_click_save() {
         firebase.database().ref('users/' + userId).set({
             year: year,
             list_pro_coures: list_pro_coures,
-            list_done_coures: list_done_coures
+            list_done_coures: list_done_coures,
+            rating : ratingCoursesList
         }, function(error) {
             if (error) {
               // The write failed...
@@ -198,9 +200,10 @@ function make_html_builds() {
         $("#table-course-profile").empty();
         for (let index = 0; index < arr.length; index++) {
 
+            let id = parseInt(arr[index].id)
             $("#table-course-profile").append(
                 '<tr>' +
-                '<td><input  id="coures-' + arr[index].id + '" data-id="' + arr[index].id + '" data-name="' + arr[index].name + '" data-value="' + arr[index].value + '"  type="checkbox" class="checkthis coures-ids" /></td>' +
+                '<td><input  id= ' + id  +' data-id="' + arr[index].id + '" data-name="' + arr[index].name + '" data-value="' + arr[index].value + '"  type="checkbox" class="checkthis coures-ids" /></td>' +
                 '<td>' + arr[index].name + '</td>' +
                 '<td>' + arr[index].value + '</td>' +
                 '<th scope="row">' + arr[index].id + '</th>' +
@@ -210,6 +213,40 @@ function make_html_builds() {
 
 
 
+
+    }
+    function updateSelectionFromDB(){
+        for (const key in listDoneCourses) {
+            let id = parseInt(listDoneCourses[key]);
+            document.getElementById(id).click();
+        }
+        for (const pro in proCourses) {
+            let idPro = proCourses[pro];
+            document.getElementById(idPro).selected = true;
+
+        }
+        let yearId = "one";
+        switch (year) {
+            case "1":
+                yearId = "one";
+                break;
+            case "2":
+                yearId = "two";
+                break;
+            case "3":
+                yearId = "three";
+                break;
+            case "4":
+                yearId = "four";
+                break;
+        
+            default:
+                break;
+        }
+        document.getElementById(yearId).selected = true;
+
+        $('.selectpicker').selectpicker('refresh');
+        removeLoader();
     }
     var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json";
 
@@ -232,7 +269,9 @@ function make_html_builds() {
 
 
 
-        make_html_in_remove_couses(uniqueArr)
+        make_html_in_remove_couses(uniqueArr);
+        updateSelectionFromDB();
+
 
     };
 
@@ -275,6 +314,17 @@ function is_login() {
             $("#hello-user").text("שלום " + user.displayName);
             $("#hello-user").css("display", "block");
         }
+        let userId = firebase.auth().currentUser.uid;
+
+        firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
+            params_data = snapshot.val();
+            ratingCoursesList = params_data.rating !=null ?params_data.rating : "" ;
+            listDoneCourses = params_data.list_done_coures;
+            proCourses = params_data.list_pro_coures;
+            year = params_data.year;
+            make_html_builds();
+
+        });
     }
     var firebaseConfig = {
         apiKey: "AIzaSyC5TD5bZiZz40XmGIFdjM5nIwga_QBTlBM",
@@ -296,6 +346,7 @@ function is_login() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+
             userNow2 = user;
             console.log(user);
             add_user_name_on_nav(user);
@@ -351,7 +402,9 @@ function readPdf() {
     });
 
 }
-
+function removeLoader() {
+    document.getElementById("loader").style.display = "none";
+}
 function makeroyipdf(pdf) {
     function update_course_table_after_parser(list_ids_course) {
         let element_to_check = document.querySelectorAll('[data-id]');
