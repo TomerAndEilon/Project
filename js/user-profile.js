@@ -78,6 +78,8 @@ function convertProCoursesToHebrow(proList){
             default:
                 break;
         }
+        if(i!= proList.length-1)
+            courseInHebrow +=","
         
     }
     return courseInHebrow == ""?"*לא נבחר מקבץ*":courseInHebrow;
@@ -86,8 +88,8 @@ function update_checked_courses(){
     var userId = firebase.auth().currentUser.uid;
     firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
         let params_data = snapshot.val();
-        let firstSemster = params_data.list_select_course !=null ? params_data.list_select_course.first: "";
-        let secondSemster = params_data.list_select_course !=null ? params_data.list_select_coursese.second: "";
+        let firstSemster = params_data.list_select_course.first !=null ? params_data.list_select_course.first: "";
+        let secondSemster = params_data.list_select_course.second !=null ? params_data.list_select_course.second: "";
         year = checkIfEmpty(params_data.year);
         extend = checkIfEmpty(params_data.list_pro_coures);
         console.log(year);
