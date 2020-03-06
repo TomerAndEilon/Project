@@ -1,4 +1,13 @@
-var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json"
+var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json";
+var url_json_wikicourse = "https://tomerandeilon.github.io/Project/wikidata.json";
+var glob_co_arr = [];
+var dict_group = {
+'software': "בפיתוח תוכנה",
+'signal': "בעיבוד אותות ולמידה חישובית",
+'AI': "בלמידה חישובית ו AI",
+'network': "במערכות זמן אמת ורשתות",
+'web': "בתכנות ב Web"
+};
 
 $(document).ready(function () {
     console.log("ready!");
@@ -9,8 +18,12 @@ $(document).ready(function () {
     update_data_to_profile()
     //building card
     making_coures_cards();
+    //add search and filter
+    add_listener_search_and_filter();
+
 
 });
+
 
 /***************************************loging and updating profile ******************************/
 
@@ -114,37 +127,49 @@ function filter_coures(arr_coures) {
         }
     }, []);
     console.log(filteredArr);
-    
+
 
     return filteredArr;
 }
 function make_cards_on_html(arr) {
     console.log("make_cards_on_html");
-    
     $("#list-co").empty();
     jQuery.each(arr, function (index, item) {
+        let heb_group = [];
+        $.each(item.group, function(index,eng_grp){
+            if(index==0){
+                heb_group.push(dict_group[eng_grp]);
+            }else{
+                heb_group.push("</br>"+dict_group[eng_grp]);
+            }
+        });
         $("#list-co").append(
-                
-        '<div class="col-lg-3 col-md-6 mb-4">'+
-            '<div class="card h-100">'+
-            '<img class="card-img-top" src="images/cs-image.jfif" alt="">'+
-            '<div class="card-body">'+
-                '<h4 data-id="'+item.id+'" class="card-title">'+item.name+'</h4>'+
-                '<p class="card-text">נקודות זכות-'+item.value+'</p>'+
-            '</div>'+
-            '<div class="card-footer">'+
-                '<a href="#" class="btn btn-primary">כניסה לקורס</a>'+
-            '</div>'+
-            '</div>'+
-        '</div>'
+            
+            '<div class="col-lg-3 col-md-6 mb-4">' +
+            '<div class="card h-100">' +
+            '<img class="card-img-top" src="images/cs-image.jfif" alt="">' +
+            '<div class="card-body">' +
+            '<h4 class="card-title item_name_co">' + item.name + '</h4>' +
+            '<p class="card-text item_value_co">נקודות זכות-' + item.value + '</p>' +
+            '<p style="display: none;" class="card-text item_id_co">נקודות זכות-' + item.id + '</p>' +
+            '<p style="display: none;" class="card-text item_data_co">' + item.data + '</p>' +
+            '<p style="display: none;" class="card-text item_group_co">' + item.group + '</p>' +
+            '<p class="card-text item_heb_group_co">' + heb_group + '</p>' +
+            '</div>' +
+            '<div class="card-footer">' +
+            '<a class="go-to-co btn btn-primary ">כניסה לקורס</a>' +
+            '</div>' +
+            '</div>' +
+            '</div>'
         );
-        
+
     });
-    
+
 }
 
+
 function making_coures_cards() {
-    requestURL = url_json_course;
+    requestURL = url_json_wikicourse;
     var request = new XMLHttpRequest();
     request.open('GET', requestURL);
     request.responseType = 'json'; // now we're getting a string!
@@ -152,8 +177,61 @@ function making_coures_cards() {
 
     request.onload = function () {
         const arrText = request.response;
-        let filteredArr = filter_coures(arrText);
-        make_cards_on_html(filteredArr);
+        glob_co_arr = arrText;
+
+        // let filteredArr = filter_coures(arrText);
+        // make_cards_on_html(filteredArr);
+        make_cards_on_html(arrText);
     };
 
 }
+
+/***************************************update course to localstorage ******************************/
+$('body').on('click', '.go-to-co', function (event) {
+    console.log("take pic");
+    let btn = $(this).parent().parent();
+    localStorage.setItem("id-co", btn.find(".item_id_co").text());
+    localStorage.setItem("name-co", btn.find(".item_name_co").text());
+    localStorage.setItem("value-co", btn.find(".item_value_co").text());
+    localStorage.setItem("data-co", btn.find(".item_data_co").text());
+    localStorage.setItem("group-co", btn.find(".item_group_co").text());
+    localStorage.setItem("heb_group-co", btn.find(".item_heb_group_co").text());
+    console.log("take co info");
+
+});
+
+/***************************************filters list co******************************/
+
+function add_listener_search_and_filter() {
+    $("#search-co").keyup('change', function () {
+        let current_search = $(this).val();
+        let temp_arr_filter = [];
+        $.each(glob_co_arr, function (index, co) {
+            if (co.name.includes(current_search))
+                temp_arr_filter.push(co);
+        });
+        make_cards_on_html(temp_arr_filter);
+    });
+
+    $("#group-filter-co").on('change', function () {
+        let list_group = $("#group-filter-co").val();
+        console.log(list_group);
+        let temp_arr_filter = [];
+        console.log(list_group.indexOf('all'));
+        if (list_group.indexOf('all') >= 0) { //if chosen all 
+            console.log('inside all');
+            make_cards_on_html(glob_co_arr);
+        } else {
+            $.each(glob_co_arr, function (index, co) {
+                $.each(co.group,function(index,grp){
+                    if (list_group.indexOf(grp) >= 0) { //if chosen all 
+                        temp_arr_filter.push(co);
+                        return false;
+                    }
+                });
+            });
+            make_cards_on_html(temp_arr_filter);
+        }
+    });
+}
+

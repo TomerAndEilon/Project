@@ -118,10 +118,10 @@
     <div>
         <div class="row text-center">
             <div class="col-lg-3 col-md-3 mb-3">
-                <input class="form-control mr-sm-2" type="text" placeholder="שם הקורס" aria-label="Search">
-                <button class="btn btn-primary" type="submit">Search</button>
+                <input id="search-co" class="form-control mr-sm-2" type="text" placeholder="שם הקורס" aria-label="Search">
+                <!-- <button class="btn btn-primary" type="submit">Search</button> -->
             </div>
-            <div class="col-lg-3 col-md-3 mb-3">
+            <!-- <div class="col-lg-3 col-md-3 mb-3">
                 <select id="c" class="selectpicker" multiple>
                     <option selected>כל הקורסים</option>
                     <option>שנה א</option>
@@ -129,21 +129,21 @@
                     <option>שנה ג</option>
                   </select>
                   
-            </div>
+            </div> -->
             <div class="col-lg-3 col-md-3 mb-3">
-                <select id="c" class="selectpicker" multiple>
-                    <option selected>כל המגמות</option>
-                    <option>מקבץ בפיתוח תוכנה</option>
-                    <option>מקבץ בעיבוד אותות ולמידה חישובית</option>
-                    <option>מקבץ בלמידה חישובית ו AI</option>
-                    <option>מקבץ במערכות זמן אמת ורשתות</option>
-                    <option>מקבץ בתכנות ב Web</option>
+                <select id="group-filter-co" class="selectpicker" multiple>
+                    <option value ='all'selected>כל המגמות</option>
+                    <option value ='software'>מקבץ בפיתוח תוכנה</option>
+                    <option value ='signal'>מקבץ בעיבוד אותות ולמידה חישובית</option>
+                    <option value ='AI'>מקבץ בלמידה חישובית ו AI</option>
+                    <option value ='network'>מקבץ במערכות זמן אמת ורשתות</option>
+                    <option value ='web'>מקבץ בתכנות ב Web</option>
                   </select>
                   
             </div>
         </div>
     </div>
-    <div id="list-co" class="row text-center">
+    <div style="min-height: 500px;" id="list-co" class="row text-center">
         
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100">
