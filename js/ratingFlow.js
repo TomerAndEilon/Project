@@ -35,7 +35,7 @@ function getAnswerFromDom(){
     map.set(numberOfQuestion+1 ,textAreaValue)
 }
 
-function updateToDB(){
+function updateToDB() {
     let userId = firebase.auth().currentUser.uid;
 
     // firebase.database().ref('users/' + userId + '/rating/' + idCourse + "/freeAnswer").set({
@@ -43,6 +43,16 @@ function updateToDB(){
     //     checked: 0
     // }, function(error) {
     // });
+    //get time and date of Comment
+    var currentdate = new Date();
+    var date = currentdate.getDate() + "/"
+        + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getFullYear() ;
+    var time = currentdate.getHours() + ":"
+        + currentdate.getMinutes() + ":"
+        + currentdate.getSeconds();
+      
+        
     firebase.database().ref('users/' + userId + '/rating/' + idCourse).set({
         q1: map.get(1),
         q2: map.get(2),
@@ -50,13 +60,15 @@ function updateToDB(){
         freeAnswer: {
             text: map.get(4),
             checked: 0
-        }
-    }, function(error) {
+        },
+        date:date,
+        time:time
+    }, function (error) {
         if (error) {
-          // The write failed...
+            // The write failed...
         } else {
-          // Data saved successfully!
-          window.location.href = "rating.html";
+            // Data saved successfully!
+            window.location.href = "rating.html";
         }
 
     });

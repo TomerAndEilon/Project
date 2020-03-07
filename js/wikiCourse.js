@@ -151,10 +151,11 @@ function make_cards_on_html(arr) {
             '<div class="card-body">' +
             '<h4 class="card-title item_name_co">' + item.name + '</h4>' +
             '<p class="card-text item_value_co">נקודות זכות-' + item.value + '</p>' +
-            '<p style="display: none;" class="card-text item_id_co">נקודות זכות-' + item.id + '</p>' +
+            '<p style="display: none;" class="card-text item_id_co">' + item.id + '</p>' +
             '<p style="display: none;" class="card-text item_data_co">' + item.data + '</p>' +
             '<p style="display: none;" class="card-text item_group_co">' + item.group + '</p>' +
             '<p class="card-text item_heb_group_co">' + heb_group + '</p>' +
+            '<p class="card-text item_condition_co">' + item.condition + '</p>' +
             '</div>' +
             '<div class="card-footer">' +
             '<a class="go-to-co btn btn-primary ">כניסה לקורס</a>' +
@@ -196,7 +197,10 @@ $('body').on('click', '.go-to-co', function (event) {
     localStorage.setItem("data-co", btn.find(".item_data_co").text());
     localStorage.setItem("group-co", btn.find(".item_group_co").text());
     localStorage.setItem("heb_group-co", btn.find(".item_heb_group_co").text());
+    localStorage.setItem("condition-co", btn.find(".item_condition_co").text());
     console.log("take co info");
+
+    window.location.href = "wikipage.html";
 
 });
 

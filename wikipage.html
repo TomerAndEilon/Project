@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>נווט אל התואר</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/business-frontpage.css" rel="stylesheet">
+
+  <link href="css/hebCss.css" rel="stylesheet">
+  <link href="css/wikipage.css" rel="stylesheet">
+  <!-- Bootstrap 4 Chosen jQuery Plugin-->
+  <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+  <!-- <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css"> -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap-select.css">
+
+
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">נווט אל התואר</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a id="hello-user" class="nav-link" href="#"
+              style="font-weight: bold;color: white;border-radius:14px;display: none;"></a>
+          </li>
+          <li class="nav-item">
+            <a id="login-btn" class="nav-link" href="login.html"
+              style="font-weight: bold;color: green;border-radius:14px;display: none;">כניסה</a>
+          </li>
+          <li class="nav-item">
+            <a id="logout-btn" class="nav-link" href="#"
+              style="font-weight: bold;color: red;border-radius:14px;display: none;">יציאה</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">דף הבית
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="user-profile.html">פרופיל אישי
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+
+            <a class="nav-link" href="schedule.html">המערכת שלי</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="wikiCourse.html">ויקי-קורס</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">צור קשר</a>
+          </li>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- <div>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a id="login-btn" class="nav-link" href="#">כניסה</a>
+                  </li>
+            </ul>
+        </div>
+    </div> -->
+  </nav>
+
+  <!-- Header -->
+  <header class="bg-primary py-5 mb-5">
+    <div class="container h-100">
+      <div class="row h-100 align-items-center">
+        <div class="col-lg-12">
+          <h1 class="display-4 text-white mt-5 mb-2">נווט אל התואר</h1>
+          <p class="lead mb-5 text-white-50">הכלים שעוזרים לך לדעת היכן אתה נמצא בתואר</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <!-- Jumbotron Header -->
+    <header class="jumbotron my-4">
+      <h1 id="name_co_page" class="display-3">שם-קורס<h1>
+          <p id="heb_group_co_page" class="lead">מקבץ</p>
+
+    </header>
+
+    <!-- Page Features -->
+    <div>
+      <div class="row text-center">
+
+      </div>
+    </div>
+    <div class="row text-center">
+
+      <div class="col-lg-4 col-md-4 mb-4">
+        <p id="wikipage-id">קוד קורס</p>
+        <p id="wikipage-grade">ציון קורס</p>
+        <p id="wikipage-value">נקודות זכות</p>
+        <p id="wikipage-condition">דרישות קדם</p>
+      </div>
+      
+      <div class="col-lg-8 col-md-8 mb-8">
+        <article id="data_co_page"></article>
+      </div>
+
+    </div>
+    
+    <!-- /.row -->
+    <div class="row">
+      <div class="col-lg-4 col-md-4 mb-4">
+      </div>
+      <div class="col-lg-4 col-md-4 mb-4">
+        <h1><u>תגובות על הקורס</u></h1>
+        
+      </div>
+      <div class="col-lg-4 col-md-4 mb-4">
+        <div>
+          <button type="button" class="btn btn-primary">כול  התגובות</button>
+        </div>
+      </div>
+
+    </div>
+    <!-- list of comment-users -->
+    <div class="container list-comments">
+
+      <div class="row comment-user">
+        <div class="col-lg-2 col-md-2 mb-2">
+        </div>
+        <div class="col-lg-8 col-md-8 mb-8">
+          <div class="card card-white post">
+            <div class="post-heading">
+              <div class="float-left image">
+                <img src="images/icons8-user-100.png" class="img-circle avatar" alt="user profile image">
+              </div>
+              <div class="float-left meta">
+                <div class="title h5">
+                  <p><b>אנונימי</b></p>
+  
+                </div>
+                <h6 class="text-muted time">שעה</h6>
+                <h6 class="text-muted time">תאריך</h6>
+                <h6 class="text-muted time">ציון - 3.5</h6>
+              </div>
+            </div>
+            <div class="post-description">
+              <p>כדי שקורסים אקדמאיים יחליפו בגרות, זה מאוד תלוי בקורס שנלקח.
+                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ- 2
+                קורסים של 3 נקודות כל אחד, אבל אז העלות כפולה וכך גם משך הלימודים).
+                הקורס המלא מקיף את כל החומר ברמה תיכונית של פיסיקה 5 יחידות.
+                אותו הדבר לגבי הקורס "כימיה כללית" המקביל ל- 5 יחידות כימיה.
+                הקורס "עולם הכימיה" מקביל ל- 3 יחידות כימיה.
+              </p>
+  
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 mb-2">
+        </div>
+  
+      </div>
+      <div class="row comment-user">
+        <div class="col-lg-2 col-md-2 mb-2">
+        </div>
+        <div class="col-lg-8 col-md-8 mb-8">
+          <div class="card card-white post">
+            <div class="post-heading">
+              <div class="float-left image">
+                <img src="images/icons8-user-100.png" class="img-circle avatar" alt="user profile image">
+              </div>
+              <div class="float-left meta">
+                <div class="title h5">
+                  <p><b>אנונימי</b></p>
+  
+                </div>
+                <h6 class="text-muted time">שעה</h6>
+                <h6 class="text-muted time">תאריך</h6>
+                <h6 class="text-muted time">ציון - 3.5</h6>
+              </div>
+            </div>
+            <div class="post-description">
+              <p>כדי שקורסים אקדמאיים יחליפו בגרות, זה מאוד תלוי בקורס שנלקח.
+                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ- 2
+                קורסים של 3 נקודות כל אחד, אבל אז העלות כפולה וכך גם משך הלימודים).
+                הקורס המלא מקיף את כל החומר ברמה תיכונית של פיסיקה 5 יחידות.
+                אותו הדבר לגבי הקורס "כימיה כללית" המקביל ל- 5 יחידות כימיה.
+                הקורס "עולם הכימיה" מקביל ל- 3 יחידות כימיה.
+              </p>
+  
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 mb-2">
+        </div>
+  
+      </div>
+      <div class="row comment-user">
+        <div class="col-lg-2 col-md-2 mb-2">
+        </div>
+        <div class="col-lg-8 col-md-8 mb-8">
+          <div class="card card-white post">
+            <div class="post-heading">
+              <div class="float-left image">
+                <img src="images/icons8-user-100.png" class="img-circle avatar" alt="user profile image">
+              </div>
+              <div class="float-left meta">
+                <div class="title h5">
+                  <p><b>אנונימי</b></p>
+  
+                </div>
+                <h6 class="text-muted time">שעה</h6>
+                <h6 class="text-muted time">תאריך</h6>
+                <h6 class="text-muted time">ציון - 3.5</h6>
+              </div>
+            </div>
+            <div class="post-description">
+              <p>כדי שקורסים אקדמאיים יחליפו בגרות, זה מאוד תלוי בקורס שנלקח.
+                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ- 2
+                קורסים של 3 נקודות כל אחד, אבל אז העלות כפולה וכך גם משך הלימודים).
+                הקורס המלא מקיף את כל החומר ברמה תיכונית של פיסיקה 5 יחידות.
+                אותו הדבר לגבי הקורס "כימיה כללית" המקביל ל- 5 יחידות כימיה.
+                הקורס "עולם הכימיה" מקביל ל- 3 יחידות כימיה.
+              </p>
+  
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 mb-2">
+        </div>
+  
+      </div>
+      
+      
+    </div>
+    <!-- /.row -->
+
+
+
+
+
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <!-- <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+
+
+  <script src="js/wikipage.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script> -->
+
+  <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script> -->
+
+  <!--dorpbox-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>
+  <script src="js/bootstrap-select.js"></script>
+  <!--firebase-->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+  <!-- Add Firebase products that you want to use -->
+
+
+  <!-- <script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC5TD5bZiZz40XmGIFdjM5nIwga_QBTlBM",
+    authDomain: "projectet-8baf2.firebaseapp.com",
+    databaseURL: "https://projectet-8baf2.firebaseio.com",
+    projectId: "projectet-8baf2",
+    storageBucket: "projectet-8baf2.appspot.com",
+    messagingSenderId: "614014308460",
+    appId: "1:614014308460:web:5650642485d3e60f3dc849",
+    measurementId: "G-EF5TVMPS6S"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script> -->
+
+</body>
+
+</html>
