@@ -154,8 +154,8 @@ function make_cards_on_html(arr) {
             '<p style="display: none;" class="card-text item_id_co">' + item.id + '</p>' +
             '<p style="display: none;" class="card-text item_data_co">' + item.data + '</p>' +
             '<p style="display: none;" class="card-text item_group_co">' + item.group + '</p>' +
-            '<p class="card-text item_heb_group_co">' + heb_group + '</p>' +
-            '<p class="card-text item_condition_co">' + item.condition + '</p>' +
+            '<p style="display: none;" class="card-text item_condition_co">' + item.condition + '</p>' +
+            '<p class="card-text item_heb_group_co">'+ "מקבץ: "+ heb_group + '</p>' +
             '</div>' +
             '<div class="card-footer">' +
             '<a class="go-to-co btn btn-primary ">כניסה לקורס</a>' +
