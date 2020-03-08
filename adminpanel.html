@@ -109,17 +109,19 @@
 
 
     <div class="d-flex " id="wrapper">
-
+        <div id="loader"></div>
         <!-- Sidebar -->
         <div style="min-height: 500px;" class="bg-light border-right" id="sidebar-wrapper">
             <div id="admin-title" class="sidebar-heading">קטגורית האדמין </div>
             <div class="list-group list-group-flush">
                 <a id="add_wiki" onclick="return false;" class="list-group-item list-group-item-action bg-light">הוספת
                     ערך לויקי קורס</a>
-                <a id="add_schedule" onclick="return false;" href="#"
-                    class="list-group-item list-group-item-action bg-light">הוספה עדכון מקצוע למערכת שלי</a>
+                <a id="remove_wiki" onclick="return false;" href="#"
+                    class="list-group-item list-group-item-action bg-light">מחיקת קורס לפי מספר קורס</a>
                 <a id="check_comments" onclick="return false;" href="#"
                     class="list-group-item list-group-item-action bg-light">אישור תגובות לויקי קורס</a>
+                <a id="remove_comments" onclick="return false;" href="#"
+                    class="list-group-item list-group-item-action bg-light">הסרת תגובות מאושרות מויקי קורס</a>
                 <a id="add_json" onclick="return false;" href="#"
                     class="list-group-item list-group-item-action bg-light">העלת json לאתר</a>
             </div>
@@ -128,6 +130,10 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
+
+            <div id="loader_now" class="spinner-border spinner-border-lg" role="status" >
+                <span class="sr-only">Loading...</span>
+              </div>
 
             <div id="show-group-wiki" style="display: none;" class='col-lg-3 col-md-3 mb-3'>
                 <p>מקבץ</p>
@@ -140,10 +146,11 @@
                       <option value ='gen' selected>מקבץ כללי</option>
               </select>
             </div> 
+            
             <div id="panel-admin" class="container-fluid">
                 
 
-                <h1 class="mt-4">בורך הבא לוח הבקרה של האדמין</h1>
+                <h1 class="mt-4">ברוך הבא לוח הבקרה של האדמין</h1>
                 <p>לוח זה נותן לך שליטה על אתר ויקי קורס ומערכת השעות</p>
 
             </div>

@@ -1,6 +1,7 @@
 var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json";
 var url_json_wikicourse = "https://tomerandeilon.github.io/Project/wikidata.json";
 var wikidata_array = [];
+var comments_array = [];
 var flag_wikidata_array = false;
 var dict_group = {
     'software': "בפיתוח תוכנה",
@@ -12,19 +13,46 @@ var dict_group = {
 
 $(document).ready(function () {
     console.log("ready!");
+
     //check if loging?
     is_login();
     // add lisaner to the logout button
     logout();
     update_data_to_profile();
+    //download from data base
+    download_db();
     //add json
     add_json();
-    //add_wiki
+    //add wiki item
     add_wiki();
+    // remove wiki item
+    remove_wiki();
+    // check comments users
+    check_comments();
+    // remove comments users
+    remove_comments();
 
 });
+/***************************************download db ******************************/
+function download_db() {
+    $('#loader_now').show();
+    firebase.database().ref('/data/wikidata/array').once('value').then(function (snapshot) {
+        let array_data = snapshot.val();
+        wikidata_array = array_data;
+        flag_wikidata_array = true;
+        console.log(flag_wikidata_array);
+        $('#loader_now').hide();
+       
+    });
+    firebase.database().ref('/users').once('value').then(function (snapshot) {
+        let array_data = snapshot.val();
+        comments_array = array_data;
+        console.log(comments_array);
+        $('#loader_now').hide();
 
-
+    });
+    
+}
 /***************************************loging and updating profile ******************************/
 
 function if_have_user_name_show_me(user) {
@@ -119,7 +147,7 @@ function add_json() {
             "<input type='text' id='name_json' name='name_json'><br><br>" +
             "<button id='update_server' type='button' class='btn btn-primary'>עדכון בשרת</button>"
         );
-        $('#show-group-wiki').css('display','none');
+        $('#show-group-wiki').css('display', 'none');
         update_server_btn();
     });
 }
@@ -172,23 +200,21 @@ function update_server_btn() {
 }
 /**************************************add wiki******************************/
 function add_wiki() {
-    firebase.database().ref('/data/wikidata/array').once('value').then(function (snapshot) {
-        let array_data = snapshot.val();
-        wikidata_array = array_data;
-        flag_wikidata_array = true;
-        console.log(flag_wikidata_array);
-
-
-    });
 
     $('#add_wiki').on('click', function () {
+        download_db();
+        if (wikidata_array.length == 0) {
+            alert("נסה שוב");
+            return false
+        }
+
         console.log(wikidata_array);
         var list_condition_wiki = [];
 
 
         $('#panel-admin').empty();
         $('#panel-admin').append(
-            
+
 
             "<div class='row'>" +
             "<label for='name_new_co'> שם הקורס</label>" +
@@ -212,12 +238,12 @@ function add_wiki() {
 
             "<div class='row'>" +
             "<button id='name_condition_co_btn' type='button' class='btn btn-primary'>הוסף קורס קדם לרשימה </button>" +
-            "<p id='list_name_condition_co'>קורסי קדם הרשימה</p>"+
+            "<p id='list_name_condition_co'>קורסי קדם הרשימה</p>" +
             "</div>" +
 
             "<div class='row'>" +
             "<label for='name_data_co'>תיאור הקורס</label>" +
-            "<textarea class='form-control' rows='5' id='name_data_co' name='text'></textarea>"+
+            "<textarea class='form-control' rows='5' id='name_data_co' name='text'></textarea>" +
             "</div>" +
 
             "<div class='row'>" +
@@ -233,7 +259,7 @@ function add_wiki() {
             "   </ul>" +
             " </div>"
         );
-        $('#show-group-wiki').css('display','block')
+        $('#show-group-wiki').css('display', 'block')
         add_condition_to_list(list_condition_wiki);
         updateTree(wikidata_array);
         update_wikidata(list_condition_wiki);
@@ -241,7 +267,6 @@ function add_wiki() {
     });
 
 }
-
 function updateTree(array_wiki) {
     var toggler = document.getElementsByClassName("caret");
     var i;
@@ -270,7 +295,7 @@ function updateTree(array_wiki) {
         });
     }
 }
-function add_condition_to_list(list_condition_wiki){
+function add_condition_to_list(list_condition_wiki) {
     $('#name_condition_co_btn').on('click', function () {
         let con = $('#name_condition_co').val();
         list_condition_wiki.push(con);
@@ -280,19 +305,18 @@ function add_condition_to_list(list_condition_wiki){
 }
 function update_wikidata(list_condition_wiki) {
     function check_if_coures_exists(id) {
-        if (wikidata_array.length==0){
+        if (wikidata_array.length == 0) {
             alert("חכה 10 שניות");
             return false;
         }
         for (let index = 0; index < wikidata_array.length; index++) {
             const element = wikidata_array[index].id;
-            if(id.localeCompare(element)==0)
-            {
+            if (id.localeCompare(element) == 0) {
                 return false;
             }
-            
+
         }
-        return true; 
+        return true;
     }
     $('#update_wiki_co_btn').on('click', function () {
         alert("חכה עד להודעה שהשרת התעדכן")
@@ -309,33 +333,416 @@ function update_wikidata(list_condition_wiki) {
         console.log(condition_co);
         console.log(data_co);
         new_co = {
-            'name':name_co,
-            'id':id_co,
-            'value':value_co,
-            'group':group_co,
-            'condition':condition_co,
+            'name': name_co,
+            'id': id_co,
+            'value': value_co,
+            'group': group_co,
+            'condition': condition_co,
             'data': data_co
         }
         console.log(check_if_coures_exists(id_co));
-        if(check_if_coures_exists(id_co)==true){
-            wikidata_array.push(new_co);
+        if (check_if_coures_exists(id_co) == true) {
+            let new_index = wikidata_array.length;
+
             arr_update = wikidata_array;
-            firebase.database().ref('data/wikidata').set({
-                array: arr_update
-    
+            firebase.database().ref('data/wikidata/array').update({
+                [new_index]: new_co
+
             }, function (error) {
                 if (error) {
                     // The write failed...
                 } else {
                     // Data saved successfully!
+                    wikidata_array.push(new_co)
+                    console.log(wikidata_array);
+
                     alert("server update")
                 }
-    
+
             });
         }
-        
+
 
 
     });
+
+}
+/**************************************remove wiki******************************/
+function remove_wiki() {
+
+    $('#remove_wiki').on('click', function () {
+        download_db();
+        if (wikidata_array.length == 0) {
+            alert("נסה שוב");
+            return false
+        }
+        console.log(wikidata_array);
+        console.log("click remove");
+        $('#show-group-wiki').css('display', 'none');
+
+
+        $('#panel-admin').empty();
+        $('#panel-admin').append(
+
+
+            "<div class='row'>" +
+            "<label for='delete_id_co'>מספר הקורס למחיקה</label>" +
+            "<input type='text' id='delete_id_co' name='delete_id_co'>" +
+            "</div>" +
+
+            "<div class='row'>" +
+            "<button id='delete_co_btn' type='button' class='btn btn-primary'>מחיקת קורס</button>" +
+            "</div>" +
+
+            "   <div class='row'>" +
+            "   <ul id='myUL'>" +
+            "     <li><span class='caret'>wikicoures</span>" +
+            "       <ul class='nested' id='semeter0'>" +
+            "       </ul>" +
+            "     </li>" +
+            "   </ul>" +
+            " </div>"
+        );
+
+        updateTree(wikidata_array);
+        remove_item_form_wiki();
+
+    });
+
+}
+function check_if_id_in_db(id) {
+    if (wikidata_array.length == 0) {
+        alert("חכה 10 שניות");
+        return false;
+    }
+    for (let index = 0; index < wikidata_array.length; index++) {
+        const element = wikidata_array[index].id;
+        if (id.localeCompare(element) == 0) {
+            return true;
+        }
+
+    }
+    return false;
+}
+function get_name_by_id(id) {
+    if (wikidata_array.length == 0) {
+        alert("חכה 10 שניות");
+        return "חכה 10 שניות";
+    }
+    for (let index = 0; index < wikidata_array.length; index++) {
+        const element = wikidata_array[index].id;
+        if (id.localeCompare(element) == 0) {
+            return wikidata_array[index].name;
+        }
+
+    }
+    return "לא נמצא";
+}
+function get_index_by_id(id) {
+    if (wikidata_array.length == 0) {
+        alert("חכה 10 שניות");
+        return -1;
+    }
+    for (let index = 0; index < wikidata_array.length; index++) {
+        const element = wikidata_array[index].id;
+        if (id.localeCompare(element) == 0) {
+            return index;
+        }
+
+    }
+    return -1;
+}
+function remove_form_wikiarray_by_id(id) {
+    if (wikidata_array.length == 0) {
+        alert("חכה 10 שניות");
+        return false;
+    }
+    for (let index = 0; index < wikidata_array.length; index++) {
+        const element = wikidata_array[index].id;
+        if (id.localeCompare(element) == 0) {
+            wikidata_array.splice(index, 1);
+            return true;
+        }
+
+    }
+    return false;
+}
+function remove_item_form_wiki() {
+    $('#delete_co_btn').on('click', function () {
+
+        let id_co = $('#delete_id_co').val();
+        console.log(id_co);
+        if (check_if_id_in_db(id_co)) {
+            let name_co = get_name_by_id(id_co);
+            console.log(name_co);
+            if (confirm(name_co + ' ' + 'אתה עומד למחוק  את הקורס ')) {
+
+                remove_form_wikiarray_by_id(id_co);
+                firebase.database().ref('data/wikidata').set({
+                    array: wikidata_array
+
+                }, function (error) {
+                    if (error) {
+                        // The write failed...
+                    } else {
+                        // Data saved successfully!
+
+
+                        alert("הקורס נמחק מהצלחה")
+                    }
+
+                });
+
+            } else {
+                // Do nothing!
+            }
+        } else {
+            alert(id_co + " לא נמצא הקורס לפי מספר קורס זה");
+        }
+
+
+
+
+
+
+
+
+        // if (check_if_coures_exists(id_co) == true) {
+        //     let new_index = wikidata_array.length;
+
+        //     arr_update = wikidata_array;
+        //     firebase.database().ref('data/wikidata/array').update({
+        //         [new_index]: new_co
+
+        //     }, function (error) {
+        //         if (error) {
+        //             // The write failed...
+        //         } else {
+        //             // Data saved successfully!
+        //             wikidata_array.push(new_co)
+        //             console.log(wikidata_array);
+
+        //             alert("server update")
+        //         }
+
+        //     });
+        // }
+
+
+
+    });
+
+
+}
+/**************************************check_comments******************************/
+function check_comments() {
+    function get_only_rating_and_add_id_user(arr_comments) {
+        users_ratings = {};
+        jQuery.each(arr_comments, function (i, val) {
+            if (val.rating) {
+                users_ratings[i] = val.rating;
+            }
+        });
+        return users_ratings
+    }
+
+
+
+    $('#check_comments').on('click', function () {
+        download_db();
+        if (comments_array.length == 0) {
+            alert("נסה שוב");
+            return false
+        }
+        $('#show-group-wiki').css('display', 'none');
+
+        let rating_only = get_only_rating_and_add_id_user(comments_array);
+        console.log(rating_only);
+        $('#panel-admin').empty();
+        var i = 0;
+        $('#panel-admin').append("<div class='container list-comments'>")
+        $.each(rating_only, function (user_id, ratings_arr) {
+            $.each(ratings_arr, function (index, rating) {
+                if(rating.freeAnswer.text != "" && rating.freeAnswer.checked == 0)
+                {
+                    
+                    $('#panel-admin').append(
+                        "<br/><br/><div class='row comment-user'>" +
+                        "       <div class='col-lg-2 col-md-2 mb-2'>" +
+                        "       </div>" +
+                        "       <div class='col-lg-8 col-md-8 mb-8'>" +
+                        "       <div class='card card-white post'>" +
+                        "           <div class='post-heading'>" +
     
+                        "           <div>" +
+                        "               <div class='title h5'>" +
+                        "               <p><b>הודעת דירוג המשתמש לאישור </b></p>" +
+                        "           </div>" +
+    
+                        "           </div>" +
+                        "           </div>" +
+                        "           <div class='post-description'>" +
+                        "           <p>" +
+                                rating.freeAnswer.text +
+                        "           </p>" +
+    
+                        "           </div>" +
+                        "       </div>" +
+                        "       </div>" +
+                        "       <div class='col-lg-2 col-md-2 mb-2'>" +
+                        "<button type='button' data-co_num='"+index+"' data-user_id='"+user_id+"' class='btn btn-success confirm_rating'>אשר</button>"+
+                        "<button type='button' data-co_num='"+index+"' data-user_id='"+user_id+"' class='btn btn-danger decline_rating'>דחה</button>"+
+                        "       </div>" +
+    
+                        "   </div>");
+                }
+
+
+            });
+        });
+        $('#panel-admin').append("</div>");
+
+        $('.confirm_rating').click(function () {
+            var btn_confrim = $(this);
+            let user_id = $(this).attr('data-user_id');
+            let co_num = $(this).attr('data-co_num');
+            console.log('users/'+user_id+'/rating/'+co_num+'/freeAnswer');
+            
+            firebase.database().ref('users/'+user_id+'/rating/'+co_num+'/freeAnswer').update({
+                "checked": 1
+
+            }, function (error) {
+                if (error) {
+                    // The write failed...
+                } else {
+                    // Data saved successfully!
+                    alert("עודכן בשרת הודעה תוסף ל ויקי קורס");
+                    console.log( $(btn_confrim).parent());
+                    
+                    $(btn_confrim).parent().parent().empty();
+                }
+
+            });
+        });
+    
+        $('.decline_rating').click( function () {
+            var btn_confrim = $(this);
+            let user_id = $(this).attr('data-user_id');
+            let co_num = $(this).attr('data-co_num');
+            console.log('users/'+user_id+'/rating/'+co_num+'/freeAnswer');
+            
+            firebase.database().ref('users/'+user_id+'/rating/'+co_num+'/freeAnswer').update({
+                "text": ""
+
+            }, function (error) {
+                if (error) {
+                    // The write failed...
+                } else {
+                    // Data saved successfully!
+                    alert("לא יעודכן בויקי קורס");
+                    console.log( $(btn_confrim).parent());
+                    
+                    $(btn_confrim).parent().parent().empty();
+                }
+
+            });
+        });
+
+    });
+
+}
+/**************************************remove comments******************************/
+function remove_comments() {
+    function get_only_rating_and_add_id_user(arr_comments) {
+        users_ratings = {};
+        jQuery.each(arr_comments, function (i, val) {
+            if (val.rating) {
+                users_ratings[i] = val.rating;
+            }
+        });
+        return users_ratings
+    }
+
+
+
+    $('#remove_comments').on('click', function () {
+        download_db();
+        if (comments_array.length == 0) {
+            alert("נסה שוב");
+            return false
+        }
+        $('#show-group-wiki').css('display', 'none');
+
+        let rating_only = get_only_rating_and_add_id_user(comments_array);
+        console.log(rating_only);
+        $('#panel-admin').empty();
+        var i = 0;
+        $('#panel-admin').append("<div class='container list-comments'>")
+        $.each(rating_only, function (user_id, ratings_arr) {
+            $.each(ratings_arr, function (index, rating) {
+                if(rating.freeAnswer.text != "" && rating.freeAnswer.checked == 1)
+                {
+                    
+                    $('#panel-admin').append(
+                        "<br/><br/><div class='row comment-user'>" +
+                        "       <div class='col-lg-2 col-md-2 mb-2'>" +
+                        "       </div>" +
+                        "       <div class='col-lg-8 col-md-8 mb-8'>" +
+                        "       <div class='card card-white post'>" +
+                        "           <div class='post-heading'>" +
+    
+                        "           <div>" +
+                        "               <div class='title h5'>" +
+                        "               <p><b>הודעת דירוג המשתמש לאישור </b></p>" +
+                        "           </div>" +
+    
+                        "           </div>" +
+                        "           </div>" +
+                        "           <div class='post-description'>" +
+                        "           <p>" +
+                                rating.freeAnswer.text +
+                        "           </p>" +
+    
+                        "           </div>" +
+                        "       </div>" +
+                        "       </div>" +
+                        "       <div class='col-lg-2 col-md-2 mb-2'>" +
+                        "<button type='button' data-co_num='"+index+"' data-user_id='"+user_id+"' class='btn btn-danger remove_rating'>הסר</button>"+
+                        "       </div>" +
+    
+                        "   </div>");
+                }
+
+
+            });
+        });
+        $('#panel-admin').append("</div>");
+
+        $('.remove_rating').click(function () {
+            var btn_remove = $(this);
+            let user_id = $(this).attr('data-user_id');
+            let co_num = $(this).attr('data-co_num');
+            
+            
+            firebase.database().ref('users/'+user_id+'/rating/'+co_num+'/freeAnswer').update({
+                "checked": 0
+
+            }, function (error) {
+                if (error) {
+                    // The write failed...
+                } else {
+                    // Data saved successfully!
+                    alert("תגובה הוסרה מויקי קורס");
+                    
+                    
+                    $(btn_remove).parent().parent().empty();
+                }
+
+            });
+        });
+    
+       
+
+    });
+
 }
