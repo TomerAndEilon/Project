@@ -318,10 +318,12 @@ function is_login() {
 
         firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
             params_data = snapshot.val();
-            ratingCoursesList = params_data.rating !=null ?params_data.rating : "" ;
-            listDoneCourses = params_data.list_done_coures;
-            proCourses = params_data.list_pro_coures;
-            year = params_data.year;
+            if(params_data!=null){
+                ratingCoursesList = params_data.rating !=null ?params_data.rating : "" ;
+                listDoneCourses = params_data.list_done_coures;
+                proCourses = params_data.list_pro_coures;
+                year = params_data.year;
+            }
             make_html_builds();
 
         });
