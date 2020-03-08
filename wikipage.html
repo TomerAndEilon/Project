@@ -128,30 +128,35 @@
         <p id="wikipage-value">נקודות זכות</p>
         <p id="wikipage-condition">דרישות קדם</p>
       </div>
-      
+
       <div class="col-lg-8 col-md-8 mb-8">
         <article id="data_co_page"></article>
       </div>
 
     </div>
-    
+
     <!-- /.row -->
     <div class="row">
       <div class="col-lg-4 col-md-4 mb-4">
+        <div id="loader_now" class="spinner-border spinner-border-lg" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
       <div class="col-lg-4 col-md-4 mb-4">
         <h1><u>תגובות על הקורס</u></h1>
-        
       </div>
+
       <div class="col-lg-4 col-md-4 mb-4">
         <div>
-          <button id="all_comments" type="button" class="btn btn-primary">כול  התגובות</button>
+          <button id="all_comments" type="button" class="btn btn-primary">כול התגובות</button>
         </div>
+
       </div>
+
 
     </div>
     <!-- list of comment-users -->
-    <div class="container list-comments">
+    <div id="list_comments" class="container list-comments">
 
       <div class="row comment-user">
         <div class="col-lg-2 col-md-2 mb-2">
@@ -165,7 +170,7 @@
               <div class="float-left meta">
                 <div class="title h5">
                   <p><b>אנונימי</b></p>
-  
+
                 </div>
                 <h6 class="text-muted time">שעה</h6>
                 <h6 class="text-muted time">תאריך</h6>
@@ -174,19 +179,19 @@
             </div>
             <div class="post-description">
               <p>כדי שקורסים אקדמאיים יחליפו בגרות, זה מאוד תלוי בקורס שנלקח.
-                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ- 2
+                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ-
+                2
                 קורסים של 3 נקודות כל אחד, אבל אז העלות כפולה וכך גם משך הלימודים).
                 הקורס המלא מקיף את כל החומר ברמה תיכונית של פיסיקה 5 יחידות.
                 אותו הדבר לגבי הקורס "כימיה כללית" המקביל ל- 5 יחידות כימיה.
                 הקורס "עולם הכימיה" מקביל ל- 3 יחידות כימיה.
               </p>
-  
+
             </div>
           </div>
         </div>
         <div class="col-lg-2 col-md-2 mb-2">
         </div>
-  
       </div>
       <div class="row comment-user">
         <div class="col-lg-2 col-md-2 mb-2">
@@ -200,7 +205,7 @@
               <div class="float-left meta">
                 <div class="title h5">
                   <p><b>אנונימי</b></p>
-  
+
                 </div>
                 <h6 class="text-muted time">שעה</h6>
                 <h6 class="text-muted time">תאריך</h6>
@@ -209,19 +214,20 @@
             </div>
             <div class="post-description">
               <p>כדי שקורסים אקדמאיים יחליפו בגרות, זה מאוד תלוי בקורס שנלקח.
-                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ- 2
+                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ-
+                2
                 קורסים של 3 נקודות כל אחד, אבל אז העלות כפולה וכך גם משך הלימודים).
                 הקורס המלא מקיף את כל החומר ברמה תיכונית של פיסיקה 5 יחידות.
                 אותו הדבר לגבי הקורס "כימיה כללית" המקביל ל- 5 יחידות כימיה.
                 הקורס "עולם הכימיה" מקביל ל- 3 יחידות כימיה.
               </p>
-  
+
             </div>
           </div>
         </div>
         <div class="col-lg-2 col-md-2 mb-2">
         </div>
-  
+
       </div>
       <div class="row comment-user">
         <div class="col-lg-2 col-md-2 mb-2">
@@ -235,7 +241,7 @@
               <div class="float-left meta">
                 <div class="title h5">
                   <p><b>אנונימי</b></p>
-  
+
                 </div>
                 <h6 class="text-muted time">שעה</h6>
                 <h6 class="text-muted time">תאריך</h6>
@@ -244,22 +250,23 @@
             </div>
             <div class="post-description">
               <p>כדי שקורסים אקדמאיים יחליפו בגרות, זה מאוד תלוי בקורס שנלקח.
-                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ- 2
+                למשל, באוניברסיטה הפתוחה מוצע קורס בשם "יסודות הפיסיקה" (קורס מלא של 6 נקודות אקדמאיות, שניתן לקחת גם כ-
+                2
                 קורסים של 3 נקודות כל אחד, אבל אז העלות כפולה וכך גם משך הלימודים).
                 הקורס המלא מקיף את כל החומר ברמה תיכונית של פיסיקה 5 יחידות.
                 אותו הדבר לגבי הקורס "כימיה כללית" המקביל ל- 5 יחידות כימיה.
                 הקורס "עולם הכימיה" מקביל ל- 3 יחידות כימיה.
               </p>
-  
+
             </div>
           </div>
         </div>
         <div class="col-lg-2 col-md-2 mb-2">
         </div>
-  
+
       </div>
-      
-      
+
+
     </div>
     <!-- /.row -->
 

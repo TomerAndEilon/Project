@@ -1,12 +1,15 @@
 var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json";
 var url_json_wikicourse = "https://tomerandeilon.github.io/Project/wikidata.json";
 var glob_co_arr = [];
+var comments_array = [];
+var total_rating_co = 0;
+var cnt_rating_co = 0;
 var dict_group = {
-'software': "בפיתוח תוכנה",
-'signal': "בעיבוד אותות ולמידה חישובית",
-'AI': "בלמידה חישובית ו AI",
-'network': "במערכות זמן אמת ורשתות",
-'web': "בתכנות ב Web"
+    'software': "בפיתוח תוכנה",
+    'signal': "בעיבוד אותות ולמידה חישובית",
+    'AI': "בלמידה חישובית ו AI",
+    'network': "במערכות זמן אמת ורשתות",
+    'web': "בתכנות ב Web"
 };
 
 $(document).ready(function () {
@@ -18,10 +21,25 @@ $(document).ready(function () {
     update_data_to_profile()
     //building card
     add_data_from_localstorage();
-    
+
+    download_db();
+
 });
 
 
+/***************************************download_db ******************************/
+function download_db() {
+    $('#loader_now').show();
+    firebase.database().ref('/users').once('value').then(function (snapshot) {
+        let array_data = snapshot.val();
+        comments_array = array_data;
+        console.log(comments_array);
+        $('#loader_now').hide();
+        update_comments_from_db();
+
+    });
+
+}
 /***************************************loging and updating profile ******************************/
 
 function if_have_user_name_show_me(user) {
@@ -108,14 +126,83 @@ function is_login() {
 /***************************************loging and updating profile ******************************/
 function add_data_from_localstorage() {
     console.log("wowow");
-    
+
     $("#name_co_page").text(localStorage.getItem("name-co"));
     $("#heb_group_co_page").text(localStorage.getItem("heb_group-co"));
     $("#data_co_page").text(localStorage.getItem("data-co"));
-    $("#wikipage-id").text("קוד קורס: "+localStorage.getItem("id-co"));
+    $("#wikipage-id").text("קוד קורס: " + localStorage.getItem("id-co"));
     // $("#wikipage-grade").text(localStorage.getItem("grade-co"));//TODO
     $("#wikipage-value").text(localStorage.getItem("value-co"));
-    $("#wikipage-condition").text("דרישות קדם: "+localStorage.getItem("condition-co"));
-    
+    $("#wikipage-condition").text("דרישות קדם: " + localStorage.getItem("condition-co"));
+
+}
+/***************************************loging and updating profile ******************************/
+function update_comments_from_db() {
+    function get_only_rating_and_add_id_user(arr_comments) {
+        users_ratings = {};
+        jQuery.each(arr_comments, function (i, val) {
+            $.each(val.rating, function (co_num, val) {
+                if (co_num in users_ratings) {
+                    users_ratings[co_num].push(val);
+                } else {
+                    users_ratings[co_num] = [val];
+                }
+            });
+        });
+        return users_ratings
+    }
+    console.log(get_only_rating_and_add_id_user(comments_array));
+    let list_ratis_by_id = get_only_rating_and_add_id_user(comments_array);
+    $('#list_comments').empty();
+    let co_num = localStorage.getItem("id-co")
+    $.each(list_ratis_by_id[co_num], function (id, val) {
+        cnt_rating_co++;
+        let local_avg_rating = (val.q1+val.q2+val.q3)/3;
+        total_rating_co+= local_avg_rating;
+        
+        if(val.freeAnswer.checked == 1){
+            $('#list_comments').append(
+                "  <div class='row comment-user'>" +
+                "  <div class='col-lg-2 col-md-2 mb-2'>" +
+                "  </div>" +
+                "  <div class='col-lg-8 col-md-8 mb-8'>" +
+                "    <div class='card card-white post'>" +
+                "      <div class='post-heading'>" +
+                "        <div class='float-left image'>" +
+                "          <img src='images/icons8-user-100.png' class='img-circle avatar' alt='user profile image'>" +
+                "        </div>" +
+                "        <div class='float-left meta'>" +
+                "          <div class='title h5'>" +
+                "            <p><b>אנונימי</b></p>" +
+
+                "          </div>" +
+                "          <h6 class='text-muted time'>שעה "+val.time+"</h6>" +
+                "          <h6 class='text-muted time'>תאריך "+val.date+"</h6>" +
+                "          <h6 class='text-muted time'>ציון - "+local_avg_rating+"</h6>" +
+                "        </div>" +
+                "      </div>" +
+                "      <div class='post-description'>" +
+                "        <p>" +
+                val.freeAnswer.text +
+                "        </p>" +
+
+                "      </div>" +
+                "    </div>" +
+                "  </div>" +
+                "  <div class='col-lg-2 col-md-2 mb-2'>" +
+                "  </div>" +
+                "</div>"
+
+            );
+        }
+
+        
+    });
+    if(cnt_rating_co!=0)
+    $("#wikipage-grade").text("ציון הקורס : "+ total_rating_co/cnt_rating_co);
+
+
+
+
 }
 
