@@ -174,8 +174,8 @@ function download_db() {
     $('#loader_now').show();
     firebase.database().ref('/data/wikidata/array').once('value').then(function (snapshot) {
         let array_data = snapshot.val();
-        wikidata_array = array_data;
-        make_cards_on_html(wikidata_array);
+        glob_co_arr = array_data;
+        make_cards_on_html(glob_co_arr);
        
         $('#loader_now').hide();
        
