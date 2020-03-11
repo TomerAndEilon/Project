@@ -192,8 +192,14 @@ function update_comments_from_db() {
     console.log(get_only_rating_and_add_id_user(comments_array));
     let list_ratis_by_id = get_only_rating_and_add_id_user(comments_array);
     $('#list_comments').empty();
-    let co_num = localStorage.getItem("id-co")
-    $.each(list_ratis_by_id[co_num], function (id, val) {
+    let co_num = localStorage.getItem("id-co").trim();
+    let co_arr_comments = [] ;
+    $.each(list_ratis_by_id,function (i,val) {
+        if(i.localeCompare(co_num)==0)
+        co_arr_comments= val;
+        
+    })
+    $.each(co_arr_comments, function (id, val) {
         cnt_rating_co++;
         let local_avg_rating = val.q2;
         total_rating_co+= local_avg_rating;
