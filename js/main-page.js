@@ -85,6 +85,7 @@ function is_login() {
             $("#logout-btn").css("display", "none");
             $("#login-btn").css("display", "block");
             console.log("not loging");
+            window.location.href = "login.html";
         }
     });
 }

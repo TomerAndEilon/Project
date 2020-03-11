@@ -62,6 +62,7 @@ function isLogin() {
             $("#hello-user").css("display", "none");
             $("#logout-btn").css("display", "none");
             $("#login-btn").css("display", "block");
+            window.location.href = "login.html";
         }
     });
 }

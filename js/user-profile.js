@@ -88,8 +88,15 @@ function update_checked_courses(){
     var userId = firebase.auth().currentUser.uid;
     firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
         let params_data = snapshot.val();
-        let firstSemster = params_data.list_select_course.first !=null ? params_data.list_select_course.first: "";
-        let secondSemster = params_data.list_select_course.second !=null ? params_data.list_select_course.second: "";
+        let firstSemster
+        let secondSemster
+        console.log(params_data);
+        if("list_select_course" in params_data)
+        {
+            
+            firstSemster = params_data.list_select_course.first !=null ? params_data.list_select_course.first: "";
+            secondSemster = params_data.list_select_course.second !=null ? params_data.list_select_course.second: "";
+        }
         year = checkIfEmpty(params_data.year);
         extend = checkIfEmpty(params_data.list_pro_coures);
         console.log(year);
@@ -180,6 +187,7 @@ function is_login() {
             $("#logout-btn").css("display", "none");
             $("#login-btn").css("display", "block");
             console.log("not loging");
+            window.location.href = "login.html";
         }
     });
 }
