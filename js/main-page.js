@@ -79,6 +79,8 @@ function is_login() {
             add_user_name_on_nav(user);
             $("#logout-btn").css("display", "block");
             $("#login-btn").css("display", "none");
+            if (user.email.localeCompare("admin@admin.com") ==0)
+            window.location.href = "adminpanel.html";
             
         } else {
             $("#hello-user").css("display","none");
