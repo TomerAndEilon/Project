@@ -6,7 +6,9 @@ var dict_group = {
 'signal': "בעיבוד אותות ולמידה חישובית",
 'AI': "בלמידה חישובית ו AI",
 'network': "במערכות זמן אמת ורשתות",
-'web': "בתכנות ב Web"
+'web': "בתכנות ב Web",
+'required':"קורס כללי",
+'gen':'קורס כללי'
 };
 
 $(document).ready(function () {
@@ -16,11 +18,11 @@ $(document).ready(function () {
     // add lisaner to the logout button
     logout()
     update_data_to_profile()
-    //building card
-    making_coures_cards();
+ 
     //add search and filter
     add_listener_search_and_filter();
-
+     //building card and download from db
+    download_db();
 
 });
 
@@ -168,7 +170,19 @@ function make_cards_on_html(arr) {
 
 }
 
-
+function download_db() {
+    $('#loader_now').show();
+    firebase.database().ref('/data/wikidata/array').once('value').then(function (snapshot) {
+        let array_data = snapshot.val();
+        wikidata_array = array_data;
+        make_cards_on_html(wikidata_array);
+       
+        $('#loader_now').hide();
+       
+    });
+   
+    
+}
 function making_coures_cards() {
     requestURL = url_json_wikicourse;
     var request = new XMLHttpRequest();
@@ -182,7 +196,7 @@ function making_coures_cards() {
 
         // let filteredArr = filter_coures(arrText);
         // make_cards_on_html(filteredArr);
-        make_cards_on_html(arrText);
+        // make_cards_on_html(arrText);
     };
 
 }

@@ -9,7 +9,8 @@ var dict_group = {
     'signal': "בעיבוד אותות ולמידה חישובית",
     'AI': "בלמידה חישובית ו AI",
     'network': "במערכות זמן אמת ורשתות",
-    'web': "בתכנות ב Web"
+    'web': "בתכנות ב Web",
+    'required':"קורס כללי"
 };
 
 $(document).ready(function () {
