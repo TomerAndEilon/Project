@@ -12,11 +12,38 @@ var coursesBySemster;
 $(document).ready(function () {
     isLogin();
     logout();
+    update_data_to_profile();
     updateDataToProfile();
     getSortedCoursesBySemster();
 
 });
+function if_have_user_name_show_me(user) {
+    setTimeout(function () {
+        if (user.displayName != null) {
+            $("#hello-user").text("שלום " + user.displayName);
+            $("#hello-user").css("display", "block");
+        }
+    }, 1000);
 
+}
+function update_data_to_profile() {
+    setTimeout(function () {
+        var user = firebase.auth().currentUser;
+        console.log(user.displayName)
+        console.log(localStorage.getItem("fullname"))
+        if (user.displayName == null) {
+            user.updateProfile({
+                displayName: localStorage.getItem("fullname")
+            }).then(function () {
+                console.log("work update user name");
+            }).catch(function (error) {
+                // An error happened.
+                console.log("error update user name");
+            });
+        }
+        if_have_user_name_show_me(user)
+    }, 3000);
+}
 function buildGraph() {
     graph = new Graph();
     requestURL = url_json_course;

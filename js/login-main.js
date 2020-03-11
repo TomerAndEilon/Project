@@ -201,7 +201,7 @@ var firstTime = false;
         }
         else if (pass != repass) {
             $("#login-err").append("<p  class='login100-form-err p-b-15' style='display: block;'>" +
-            "the password is not the some </p>");
+            "the password is not the same </p>");
             setTimeout(function(){$("#login-err").empty();},10000) ;
             $("#login-err").css("display", "block");
             return;

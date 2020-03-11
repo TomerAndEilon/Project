@@ -1,6 +1,7 @@
 var url_json_course = "https://tomerandeilon.github.io/Project/tomerJson.json";
 var url_json_wikicourse = "https://tomerandeilon.github.io/Project/wikidata.json";
 var glob_co_arr = [];
+var wiki_all_co = [];
 var dict_group = {
 'software': "בפיתוח תוכנה",
 'signal': "בעיבוד אותות ולמידה חישובית",
@@ -134,13 +135,25 @@ function filter_coures(arr_coures) {
 
     return filteredArr;
 }
+function arraysEqual(id1, id2) {
+    let a = String(id1).trim();
+    let b = String(id2).trim();
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    // if (a.length != b.length) return false;
+    let len = a.length < b.length ? a.length : b.length;
+    for (var i = 0; i < len; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
 function make_cards_on_html(arr) {
     function convert_list_of_id_to_list_of_coures(list_id) {
        let list_co_string = [];
         
         $.each(list_id,function (i,id_num) {
-            $.each(arr,function (i,val) {
-                if(id_num.localeCompare(val.id)==0)
+            $.each(wiki_all_co,function (i,val) {
+                if(arraysEqual(val.id,id_num))
                 {
                     list_co_string.push(val.name)
                 }
@@ -161,6 +174,10 @@ function make_cards_on_html(arr) {
                 heb_group.push("</br>"+dict_group[eng_grp]);
             }
         });
+        console.log(item.name);
+        console.log( convert_list_of_id_to_list_of_coures(item.condition));
+        console.log( item.condition);
+        
         $("#list-co").append(
             
             '<div class="col-lg-3 col-md-6 mb-4">' +
@@ -192,6 +209,7 @@ function download_db() {
     firebase.database().ref('/data/wikidata/array').once('value').then(function (snapshot) {
         let array_data = snapshot.val();
         glob_co_arr = array_data;
+        wiki_all_co = array_data;
         make_cards_on_html(glob_co_arr);
        
         $('#loader_now').hide();
