@@ -10,34 +10,35 @@
 
   <title>נווט אל התואר</title>
 
-   <!-- Bootstrap core CSS -->
-   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-   <link href="css/ratingFlow.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/ratingFlow.css" rel="stylesheet">
 
-   <!-- Custom styles for this template -->
-   <link href="css/business-frontpage.css" rel="stylesheet">
-  
-   <link href="css/hebCss.css" rel="stylesheet">
-   <!-- Bootstrap 4 Chosen jQuery Plugin-->
-   <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-   <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet" type="text/css">
-   <!-- <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css"> -->
-   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
- 
-   <!-- Latest compiled and minified CSS -->
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-   <link rel="stylesheet" href="css/bootstrap-select.css">
+  <!-- Custom styles for this template -->
+  <link href="css/business-frontpage.css" rel="stylesheet">
 
-   
- 
+  <link href="css/hebCss.css" rel="stylesheet">
+  <!-- Bootstrap 4 Chosen jQuery Plugin-->
+  <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet"
+    type="text/css">
+  <!-- <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css"> -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap-select.css">
+
+
+
 
 
 </head>
 
 <body>
-  
+
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -50,15 +51,15 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a id="hello-user" class="nav-link" href="#"
-            style="font-weight: bold;color: white;border-radius:14px;display: none;"></a>
+              style="font-weight: bold;color: white;border-radius:14px;display: none;"></a>
           </li>
-        <li class="nav-item">
+          <li class="nav-item">
             <a id="login-btn" class="nav-link" href="login.html"
-            style="font-weight: bold;color: green;border-radius:14px;display: none;">כניסה</a>
+              style="font-weight: bold;color: green;border-radius:14px;display: none;">כניסה</a>
           </li>
-        <li class="nav-item">
+          <li class="nav-item">
             <a id="logout-btn" class="nav-link" href="#"
-            style="font-weight: bold;color: red;border-radius:14px;display: none;">יציאה</a>
+              style="font-weight: bold;color: red;border-radius:14px;display: none;">יציאה</a>
           </li>
           <li class="nav-item ">
             <a class="nav-link" href="index.html">דף הבית
@@ -71,30 +72,30 @@
             </a>
           </li>
           <li class="nav-item">
-            <a  class="nav-link" href = "schedule.html" >המערכת שלי</a>
+            <a class="nav-link" href="schedule.html">המערכת שלי</a>
           </li>
           <li class="nav-item active">
-            <a  class="nav-link active" href = "rating.html" >דירוג קורסים</a>
+            <a class="nav-link active" href="rating.html">דירוג קורסים</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="#">ויקי-קורס</a>
+            <a class="nav-link" href="#">ויקי-קורס</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">צור קשר</a>
           </li>
-        </li>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
-  
+
 
   <!-- Header -->
   <header class="bg-primary py-0 mb-5">
     <div class="container h-100">
       <div class="row h-100 align-items-center">
         <div class="col-lg-12">
-          <h1  class="display-4 text-white mt-5 mb-2"> דירוג קורס</h1>
+          <h1 class="display-4 text-white mt-5 mb-2"> דירוג קורס</h1>
           <p id="courseTitle" class="lead mb-5 text-white-50"></p>
           <p class="lead mb-5 text-white-50">פירוט הדירוג - 1- במידה מועטה 5- במידה רבה מאוד</p>
         </div>
@@ -104,81 +105,36 @@
 
   <!-- Page Content -->
   <div class="container">
-    <div class="row">
-      <h2>רמת הקושי של הקורס?</h2>
-    </div>
-     <div class="row">
 
-       <label class="wrapper radio-inline">1
-         <input class="q1" type="radio" checked="checked" name="radio1" value="1">
-         <span class="checkmark"></span>
-       </label>
-       <label class="wrapper radio-inline">2
-         <input class="q1" type="radio" name="radio1" value="2">
-         <span class="checkmark"></span>
-       </label>
-       <label class="wrapper radio-inline">3
-         <input class="q1" type="radio" name="radio1" value="3">
-         <span class="checkmark"></span>
-       </label>
-       <label class="wrapper radio-inline">4
-         <input class="q1" type="radio" name="radio1" value="4" >
-         <span class="checkmark"></span>
-       </label>
-       <label class="wrapper radio-inline">5
-         <input class="q1" type="radio" name="radio1" value="5">
-         <span class="checkmark"></span>
-       </label>
-     </div>
+    
+    
+
+
+    <div class="row">
+      <div class="col-lg-4 col-md-4 mb-4">
+        <h2>רמת הקושי של הקורס?</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 mb-12">
+        <div id="q1_rating"></div>
+      </div>
+    </div>
     <div class="row">
       <h2>דירוג הקורס באופן כללי</h2>
     </div>
     <div class="row">
-      <label class="wrapper radio-inline">1
-        <input class="q2" type="radio" checked="checked" name="radio2" value="1">
-        <span class="checkmark"></span>
-      </label>
-      <label class="wrapper radio-inline">2
-        <input class="q2" type="radio" name="radio2" value="2">
-        <span class="checkmark"></span>
-      </label>
-      <label class="wrapper radio-inline">3
-        <input class="q2" type="radio" name="radio2" value="3">
-        <span class="checkmark"></span>
-      </label>
-      <label class="wrapper radio-inline">4
-        <input class="q2" type="radio" name="radio2" value="4">
-        <span class="checkmark"></span>
-      </label>
-      <label class="wrapper radio-inline">5
-        <input class="q2" type="radio" name="radio2" value="5">
-        <span class="checkmark"></span>
-      </label>
+      <div class="col-lg-12 col-md-12 mb-12">
+        <div id="q2_rating"></div>
+      </div>
     </div>
     <div class="row">
       <h2>הקורס דרש הרבה זמן עבודה במהלך הסמסטר?</h2>
     </div>
     <div class="row">
-      <label class="wrapper radio-inline">1
-        <input class="q3" type="radio" checked="checked" name="radio3" value="1">
-        <span class="checkmark"></span>
-      </label>
-      <label class="wrapper radio-inline">2
-        <input class="q3" type="radio" name="radio3" value="2">
-        <span class="checkmark"></span>
-      </label>
-      <label class="wrapper radio-inline">3
-        <input class="q3" type="radio" name="radio3" value="3">
-        <span class="checkmark"></span>
-      </label>
-      <label class="wrapper radio-inline">4
-        <input class="q3" type="radio" name="radio3" value="4">
-        <span class="checkmark"></span>
-      </label>
-      <label class="wrapper radio-inline">5
-        <input class="q3" type="radio" name="radio3" value="5">
-        <span class="checkmark"></span>
-      </label>
+      <div class="col-lg-12 col-md-12 mb-12">
+        <div id="q3_rating"></div>
+      </div>
     </div>
     <div class="row">
       <h2>הערות נוספות</h2>
@@ -186,8 +142,8 @@
     <div class="row">
       <textarea id="textArea" name="message" rows="10" cols="100"></textarea>
     </div>
-    
-    <div  class="row" >
+
+    <div class="row">
       <a id="save-button" class="btn btn-primary btn-lg text-center" href="#">שמור &raquo;</a>
     </div>
   </div>
@@ -203,11 +159,11 @@
 
 
 
-	<!-- Add Firebase products that you want to use -->
-	<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
 
 
 
@@ -216,7 +172,8 @@
   <script src="vendor/jquery/jquery.min.js"></script>
   <!-- <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
   
-
+   <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
+   <script src="dist/emotion-ratings.js"></script>
   <script src="js/ratingFlow.js"></script>
 
   <!-- Latest compiled and minified JavaScript -->
@@ -231,8 +188,10 @@
   <!-- pdfreader -->
   <script src="pdfreader/pdf.js"></script>
   <!--graph-->
-  <script src="js/graph/graph.js" ></script>
-  
+  <script src="js/graph/graph.js"></script>
+
+ 
+
 </body>
 
 </html>

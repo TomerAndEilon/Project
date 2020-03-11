@@ -22,15 +22,31 @@ $('#save-button').click(function() {
 });
 
 function getAnswerFromDom(){
-    for (let i = 1; i <= numberOfQuestion; i++) {
-        let elemnts =document.getElementsByClassName("q" + i);
-        for (let j = 0; j < elemnts.length; j++) {
-            if(elemnts[j].checked){
-                map.set(i,j+1);                
-                break;
-            }
-        }
+   
+    if ($("#q1_rating").find(".emoji-rating-emotion-container-q1_rating").val().localeCompare("undefined")==0)
+    {
+        map.set(1,0);
+    }else{
+        let q1_val = $("#q1_rating").find(".emoji-rating-emotion-container-q1_rating").val();
+        map.set(1,parseInt(q1_val));
     }
+
+    if ($("#q2_rating").find(".emoji-rating-emotion-container-q2_rating").val().localeCompare("undefined")==0)
+    {
+        map.set(2,0);
+    }else{
+        let q2_val = $("#q2_rating").find(".emoji-rating-emotion-container-q2_rating").val();
+        map.set(2,parseInt(q2_val));
+    }
+
+    if ($("#q3_rating").find(".emoji-rating-emotion-container-q3_rating").val().localeCompare("undefined")==0)
+    {
+        map.set(3,0);
+    }else{
+        let q3_val = $("#q3_rating").find(".emoji-rating-emotion-container-q3_rating").val();
+        map.set(3,parseInt(q3_val));
+    }
+
     let textAreaValue = $('#textArea').val();
     map.set(numberOfQuestion+1 ,textAreaValue)
 }
@@ -38,12 +54,6 @@ function getAnswerFromDom(){
 function updateToDB() {
     let userId = firebase.auth().currentUser.uid;
 
-    // firebase.database().ref('users/' + userId + '/rating/' + idCourse + "/freeAnswer").set({
-    //     text: map.get(4),
-    //     checked: 0
-    // }, function(error) {
-    // });
-    //get time and date of Comment
     var currentdate = new Date();
     var date = currentdate.getDate() + "/"
         + (currentdate.getMonth() + 1) + "/"
@@ -133,5 +143,41 @@ function updateDataToProfile() {
 }
 
 
+/***************************smile rating********************************** */
 
+
+var emotionsArray = ['angry','disappointed','meh', 'happy', 'inLove'];
+  $("#q1_rating").emotionsRating({
+    emotionSize: 50,
+    bgEmotion: 'happy',
+    emotions: emotionsArray,
+    color: 'gold'
+  });
+  $("#q2_rating").emotionsRating({
+    emotionSize: 50,
+    bgEmotion: 'happy',
+    emotions: emotionsArray,
+    color: 'gold'
+  });
+  $("#q3_rating").emotionsRating({
+    emotionSize: 50,
+    bgEmotion: 'happy',
+    emotions: emotionsArray,
+    color: 'gold'
+  });
+
+
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    console.log(s);
+    
+  })();
 
