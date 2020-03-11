@@ -4,6 +4,9 @@ var glob_co_arr = [];
 var comments_array = [];
 var total_rating_co = 0;
 var cnt_rating_co = 0;
+var q_one = 0;
+var q_two = 0;
+var q_three = 0;
 var dict_group = {
     'software': "בפיתוח תוכנה",
     'signal': "בעיבוד אותות ולמידה חישובית",
@@ -24,9 +27,38 @@ $(document).ready(function () {
     add_data_from_localstorage();
 
     download_db();
-
+    update_stars();
 });
 
+
+/***************************************star rate******************************/
+function update_stars() {
+    var starRatingClass = $(".star-rating");
+    // var star_val = starRatingClass.find(".rating-value");
+    // var $star_rating = $('.star-rating .fa');
+    
+    var SetRatingStar = function() {
+      $.each(starRatingClass,function(index,val) {
+        var star_val = $(val).find(".rating-value");
+        
+        var number_star = parseInt(star_val.val());
+        if(number_star>0)
+            $(val).find(".star_1").removeClass("fa-star-o").addClass("fa-star");
+        if(number_star>1)
+            $(val).find(".star_2").removeClass("fa-star-o").addClass("fa-star");
+        if(number_star>2)
+            $(val).find(".star_3").removeClass("fa-star-o").addClass("fa-star");
+        if(number_star>3)
+            $(val).find(".star_4").removeClass("fa-star-o").addClass("fa-star");
+        if(number_star>4)
+            $(val).find(".star_5").removeClass("fa-star-o").addClass("fa-star");
+        
+      });
+    };
+    
+    
+    SetRatingStar();
+}
 
 /***************************************download_db ******************************/
 function download_db() {
@@ -126,15 +158,20 @@ function is_login() {
 
 /***************************************loging and updating profile ******************************/
 function add_data_from_localstorage() {
-    console.log("wowow");
 
     $("#name_co_page").text(localStorage.getItem("name-co"));
     $("#heb_group_co_page").text(localStorage.getItem("heb_group-co"));
     $("#data_co_page").text(localStorage.getItem("data-co"));
     $("#wikipage-id").text("קוד קורס: " + localStorage.getItem("id-co"));
-    // $("#wikipage-grade").text(localStorage.getItem("grade-co"));//TODO
     $("#wikipage-value").text(localStorage.getItem("value-co"));
-    $("#wikipage-condition").text("דרישות קדם: " + localStorage.getItem("condition-co"));
+ 
+    if (localStorage.getItem("condition-co").localeCompare('')==0) {
+        $("#wikipage-condition").text("דרישות קדם: אין" );
+      }
+      else{
+        $("#wikipage-condition").text("דרישות קדם: " + localStorage.getItem("condition-co"));
+      }
+    
 
 }
 /***************************************loging and updating profile ******************************/
@@ -158,9 +195,11 @@ function update_comments_from_db() {
     let co_num = localStorage.getItem("id-co")
     $.each(list_ratis_by_id[co_num], function (id, val) {
         cnt_rating_co++;
-        let local_avg_rating = (val.q1+val.q2+val.q3)/3;
+        let local_avg_rating = val.q2;
         total_rating_co+= local_avg_rating;
-        
+        q_one+=val.q1;
+        q_two+=val.q2;
+        q_three+=val.q3;
         if(val.freeAnswer.checked == 1){
             $('#list_comments').append(
                 "  <div class='row comment-user'>" +
@@ -199,9 +238,20 @@ function update_comments_from_db() {
 
         
     });
-    if(cnt_rating_co!=0)
-    $("#wikipage-grade").text("ציון הקורס : "+ total_rating_co/cnt_rating_co);
-
+    
+    
+    if (q_one!=0) {
+        $("#q_one_val").val(q_one/cnt_rating_co);
+        update_stars();
+    }
+    if (q_two!=0) {
+        $("#q_two_val").val(q_two/cnt_rating_co);
+        update_stars();
+    }
+    if (q_three!=0) {
+        $("#q_three_val").val(q_three/cnt_rating_co);
+        update_stars();
+    }
 
 
 

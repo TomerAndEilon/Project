@@ -134,7 +134,22 @@ function filter_coures(arr_coures) {
     return filteredArr;
 }
 function make_cards_on_html(arr) {
+    function convert_list_of_id_to_list_of_coures(list_id) {
+       let list_co_string = [];
+        
+        $.each(list_id,function (i,id_num) {
+            $.each(arr,function (i,val) {
+                if(id_num.localeCompare(val.id)==0)
+                {
+                    list_co_string.push(val.name)
+                }
+            });
+        });
+        return list_co_string
+    }
     console.log("make_cards_on_html");
+    console.log(arr);
+    
     $("#list-co").empty();
     jQuery.each(arr, function (index, item) {
         let heb_group = [];
@@ -156,7 +171,8 @@ function make_cards_on_html(arr) {
             '<p style="display: none;" class="card-text item_id_co">' + item.id + '</p>' +
             '<p style="display: none;" class="card-text item_data_co">' + item.data + '</p>' +
             '<p style="display: none;" class="card-text item_group_co">' + item.group + '</p>' +
-            '<p style="display: none;" class="card-text item_condition_co">' + item.condition + '</p>' +
+            '<p style="display: none;" class="card-text item_condition_co">' +
+            convert_list_of_id_to_list_of_coures(item.condition) + '</p>' +
             '<p class="card-text item_heb_group_co">'+ "מקבץ: "+ heb_group + '</p>' +
             '</div>' +
             '<div class="card-footer">' +

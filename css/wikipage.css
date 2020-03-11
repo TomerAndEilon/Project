@@ -105,3 +105,10 @@
   .post .post-footer .comments-list .comment > .comments-list {
     margin-left: 50px;
   }
+  /*star-rating */
+  .star-rating {
+    line-height:32px;
+    font-size:1.25em;
+  }
+  
+  .star-rating .fa-star{color: yellow;}
